@@ -104,12 +104,15 @@
             <td>{{ currency }}{{ item.price | number: '2.2' }}</td>
             <td>
               <div class="d-flex gap-2">
-                <a href="javascript:void(0);" class="btn btn-light btn-sm"
-                  ><iconify-icon
-                    icon="solar:eye-broken"
-                    class="align-middle fs-18"
-                  ></iconify-icon
-                ></a>
+                <!-- ------------------------------bassant-------------------------------------------------- -->
+               <a 
+  href="javascript:void(0);" 
+  class="btn btn-light btn-sm"
+  (click)="openPropertyModal(propertyModal, item)">
+  <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
+</a>
+
+                <!-- -------------------------------------------------------------------------------- -->
                 <a
                   href="javascript:void(0);"
                   class="btn btn-soft-primary btn-sm"
@@ -131,7 +134,28 @@
       </tbody>
     </table>
   </div>
+  <!-- ---------------------------------bassant----------------------------------------------- -->
+<ng-template #propertyModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ selectedProperty?.name }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <img [src]="selectedProperty?.image" alt="" class="img-fluid mb-3 rounded">
+    <p><strong>Size:</strong> {{ selectedProperty?.size }} ft</p>
+    <p><strong>Type:</strong> {{ selectedProperty?.propertyType }}</p>
+    <p><strong>Bedrooms:</strong> {{ selectedProperty?.beds }}</p>
+    <p><strong>Location:</strong> {{ selectedProperty?.country }}</p>
+    <p><strong>Price:</strong> {{ currency }}{{ selectedProperty?.price | number:'2.2' }}</p>
+  </div>
+</ng-template>
 
+
+
+
+
+
+<!-- ------------------------------------------------------------------------------- -->
   <div class="card-footer">
     <nav aria-label="Page navigation example">
       <ngb-pagination
