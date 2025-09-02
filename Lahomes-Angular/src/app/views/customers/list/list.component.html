@@ -49,6 +49,28 @@
         <div>
           <h4 class="card-title">All Customer List</h4>
         </div>
+       <!-- ---------------------------search --------------------------->
+<div class="d-flex align-items-center gap-2">
+  <div class="position-relative" style="width: 280px; max-width: 100%;">
+    <input
+      type="text"
+      placeholder="Search customers..."
+      [(ngModel)]="searchText"
+      (input)="filterCustomers()"
+      class="form-control pe-5 rounded-pill border shadow-sm
+             dark:bg-gray-800 dark:text-white dark:border-gray-700"
+    />
+    <button
+      type="button"
+      (click)="filterCustomers()"
+      class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-1 rounded-circle d-flex align-items-center justify-content-center"
+      style="width: 36px; height: 36px;"
+    >
+      <i class="ri-search-line"></i>
+    </button>
+  </div>
+</div>
+
         <div ngbDropdown>
           <a ngbDropdownToggle role="button" class="btn btn-sm btn-outline-light rounded">
             This Month
@@ -84,6 +106,7 @@
               </tr>
             </thead>
             <tbody>
+<<<<<<< HEAD
               @for (item of customerList; track $index) {
               <tr>
                 <td>
@@ -96,6 +119,20 @@
                   <div class="d-flex align-items-center gap-2">
                     <div>
                       <img [src]="item.image" alt="" class="avatar-sm rounded-circle" />
+=======
+              @for (item of filteredCustomers; track $index) {
+                <tr>
+                  <td>
+                    <div class="form-check">
+                      <input
+                        type="checkbox"
+                        class="form-check-input"
+                        id="customCheck2"
+                      />
+                      <label class="form-check-label" for="customCheck2"
+                        >&nbsp;</label
+                      >
+>>>>>>> origin/search-input
                     </div>
                     <div>
                       <a href="javascript:void(0);" class="text-dark fw-medium fs-15">{{ item.name }}</a>
