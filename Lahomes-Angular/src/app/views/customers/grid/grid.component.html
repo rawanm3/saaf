@@ -1,7 +1,32 @@
 <app-page-title title="Customers" subTitle="Customer Grid" />
+<!---------------------------- search input -------------------------->
+<div class="d-flex justify-content-end mb-4">
+  <div class="position-relative" style="width: 280px; max-width: 100%;">
+    <!-- Input -->
+    <input
+      type="text"
+      placeholder="Search customers..."
+      [(ngModel)]="searchText"
+      (input)="filterCustomers()"
+      class="form-control pe-5 rounded-pill border shadow-sm
+             dark:bg-gray-800 dark:text-white dark:border-gray-700"
+    />
+    <!-- Button -->
+    <button
+      type="button"
+      (click)="filterCustomers()"
+      class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-1 rounded-circle d-flex align-items-center justify-content-center"
+      style="width: 36px; height: 36px;"
+    >
+      <i class="ri-search-line"></i>
+    </button>
+  </div>
+</div>
+
+
 
 <div class="row">
-  @for (item of customers; track $index) {
+  @for (item of filteredCustomers; track $index) {
     <div class="col-md-6 col-xl-4">
       <div class="card overflow-hidden">
         <div class="card-body">

@@ -59,6 +59,28 @@
         <div>
           <h4 class="card-title">All Customer List</h4>
         </div>
+       <!-- ---------------------------search --------------------------->
+<div class="d-flex align-items-center gap-2">
+  <div class="position-relative" style="width: 280px; max-width: 100%;">
+    <input
+      type="text"
+      placeholder="Search customers..."
+      [(ngModel)]="searchText"
+      (input)="filterCustomers()"
+      class="form-control pe-5 rounded-pill border shadow-sm
+             dark:bg-gray-800 dark:text-white dark:border-gray-700"
+    />
+    <button
+      type="button"
+      (click)="filterCustomers()"
+      class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-1 rounded-circle d-flex align-items-center justify-content-center"
+      style="width: 36px; height: 36px;"
+    >
+      <i class="ri-search-line"></i>
+    </button>
+  </div>
+</div>
+
         <div ngbDropdown>
           <a
             ngbDropdownToggle
@@ -104,7 +126,7 @@
               </tr>
             </thead>
             <tbody>
-              @for (item of customerList; track $index) {
+              @for (item of filteredCustomers; track $index) {
                 <tr>
                   <td>
                     <div class="form-check">
