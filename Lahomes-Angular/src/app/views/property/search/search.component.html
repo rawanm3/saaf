@@ -1,0 +1,33 @@
+<app-page-title title="Property" subTitle="Search" />
+
+<div class="row">
+  <div class="col-lg-8 col-md-10">
+    <div class="card">
+      <div class="card-header bg-light-subtle">
+        <h4 class="card-title">Search Properties</h4>
+      </div>
+      <div class="card-body">
+        <div class="mb-3 position-relative">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search property by name..."
+            [value]="query"
+            (input)="handleInput($event)"
+            (keydown.enter)="tryNavigateSelected()"
+            list="propertyNames"
+            autocomplete="off"
+          />
+          <datalist id="propertyNames">
+            @for (name of filteredNames; track name) {
+              <option [value]="name"></option>
+            }
+          </datalist>
+        </div>
+        <button class="btn btn-primary" (click)="tryNavigateSelected()">Go to Details</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
