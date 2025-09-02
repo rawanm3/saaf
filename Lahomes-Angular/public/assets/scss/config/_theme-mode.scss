@@ -91,3 +91,36 @@ html[data-bs-theme="dark"][data-topbar-color="light"] {
     --#{$prefix}topbar-item-color:                         #afb9cf;
     --#{$prefix}topbar-search-bg:                          #303943;
 }
+/* 🌿 Theme Green (#3a5445) */
+html[data-menu-color="dark"] {
+    --bs-body-bg: #f8f5f3;
+  --#{$prefix}main-nav-bg:           #3a5445;
+  --#{$prefix}main-nav-item-color:   #ede6e3;
+  --#{$prefix}main-nav-item-hover-bg:#c8a877;
+  --#{$prefix}main-nav-item-hover-color:#fff;
+  --#{$prefix}topbar-bg:             #f8f4f2;
+  --#{$prefix}topbar-item-color:     #3a5445;
+  --#{$prefix}topbar-search-bg:      #ede6e3;
+}
+
+/* 🟤 Theme Gold (#c8a877) */
+html[data-theme="gold"] {
+  --#{$prefix}main-nav-bg:           #c8a877;
+  --#{$prefix}main-nav-item-color:   #3a5445;
+  --#{$prefix}main-nav-item-hover-bg:#ede6e3;
+  --#{$prefix}main-nav-item-hover-color:#3a5445;
+  --#{$prefix}topbar-bg:             #c8a877;
+  --#{$prefix}topbar-item-color:     #3a5445;
+  --#{$prefix}topbar-search-bg:      #ede6e3;
+}
+
+/* 🤍 Theme Beige (#ede6e3) */
+html[data-theme="beige"] {
+  --#{$prefix}main-nav-bg:           #ede6e3;
+  --#{$prefix}main-nav-item-color:   #3a5445;
+  --#{$prefix}main-nav-item-hover-bg:#c8a877;
+  --#{$prefix}main-nav-item-hover-color:#3a5445;
+  --#{$prefix}topbar-bg:             #ede6e3;
+  --#{$prefix}topbar-item-color:     #3a5445;
+  --#{$prefix}topbar-search-bg:      #c8a877;
+}

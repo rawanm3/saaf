@@ -23,12 +23,13 @@ import { RouterLink } from '@angular/router'
 
       <a routerLink="/" class="logo-light">
         @if (size) {
-          <img src="assets/images/logo-sm.png" class="logo-sm" alt="logo sm" />
+          <img src="assets/images/logo-light.png" class="logo-sm" alt="logo sm" />
           <img
             src="assets/images/logo-light.png"
             class="logo-lg"
             alt="logo light"
           />
+          <span>SAAF</span>
         } @else {
           <img
             src="assets/images/logo-light.png"
@@ -36,7 +37,9 @@ import { RouterLink } from '@angular/router'
             alt="logo light"
           />
         }
+        
       </a>
+
     </div>
   `,
 })

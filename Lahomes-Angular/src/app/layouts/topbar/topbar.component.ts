@@ -109,4 +109,11 @@ export class TopbarComponent {
   logout() {
     this.store.dispatch(logout())
   }
+    isRTL = false;
+  isOpen = false;
+
+  toggleLang(): void {
+    this.isRTL = !this.isRTL;
+    document.documentElement.dir = this.isRTL ? 'rtl' : 'ltr';
+  }
 }

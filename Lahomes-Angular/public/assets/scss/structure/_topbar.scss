@@ -153,3 +153,66 @@ html[data-menu-size="hidden"] {
           border-radius: 0;
      }
 }
+html[dir="rtl"] .topbar {
+  margin-right: 260px !important;
+  margin-left: 10px !important;
+}
+html[dir="rtl"][data-menu-size=condensed] .topbar {
+margin-right: 75px !important;
+}
+/* RTL Toggle Switch */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+
+  .toggle-switch {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+
+    input {
+      display: none;
+    }
+
+    .slider {
+      position: relative;
+      width: 50px;
+      height: 24px;
+      background-color: #ccc;
+      border-radius: 34px;
+      transition: 0.3s;
+      margin-right: 8px;
+
+      &::before {
+        content: "";
+        position: absolute;
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.3s;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    input:checked + .slider {
+      background-color: $primary; // لون البراند الأساسي
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(26px);
+    }
+
+    .label-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: $topbar-item-color;
+    }
+  }
+}

@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common'
 import { Component, inject, ViewChild, type OnInit } from '@angular/core'
 import {
   NavigationCancel,
@@ -18,11 +19,14 @@ import {
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgProgressModule],
+  imports: [RouterOutlet, NgProgressModule ,CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit {
+  title(title: any) {
+    throw new Error('Method not implemented.')
+  }
   progressRef!: NgProgressRef
   @ViewChild(NgProgressComponent) progressBar!: NgProgressComponent
 
@@ -53,4 +57,6 @@ export class AppComponent implements OnInit {
       }, 200)
     }
   }
+
+
 }

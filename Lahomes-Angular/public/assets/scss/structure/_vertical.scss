@@ -17,6 +17,22 @@
      line-height: $topbar-height;
      padding: 0 calc($main-nav-width-sm * 0.5 - $logo-sm-height * 0.5);
 
+     span{
+          font-weight: 600 !important;
+              margin-left: 0.5rem;
+    font-size: 1rem;
+    color: #dedede;
+    display: none;
+     }
+//     .logo-light  .logo-lg span {
+//   display: none;
+// }
+
+ // لو في logo-lg + span → بيظهر النص
+     .logo-lg + span {
+       display: inline-block;
+       margin-left: 5px;
+     }
      .logo-sm {
           display: none;
           height: $logo-sm-height;
@@ -24,6 +40,7 @@
 
      .logo-lg {
           height: $logo-lg-height;
+          border-radius: 6px;
      }
 
      .logo-light {
@@ -35,7 +52,14 @@
      }
 }
 
-
+html[dir="rtl"] .wrapper .page-content{
+      margin-right: 250px !important;
+  margin-left: 0px !important;
+      border-left: 10px solid  $main-nav-bg;
+}
+html[dir="rtl"][data-menu-size=condensed] .wrapper .page-content {
+margin-right: 65px !important;
+}
 .wrapper {
      height: 100%;
      margin: 0 auto;
@@ -237,6 +261,10 @@ html[data-menu-size="condensed"] {
 
                .logo-sm {
                     display: inline-block;
+                    border-radius: 6px;
+               }
+               span {
+                     display: none !important;
                }
 
           }

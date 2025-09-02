@@ -41,7 +41,7 @@
           </div>
 
           <div class="dropdown topbar-item d-none d-lg-flex">
-            <button
+            <!-- <button
               type="button"
               class="topbar-button"
               (click)="fullscreen()"
@@ -49,7 +49,14 @@
             >
               <i class="ri-fullscreen-line fs-24 fullscreen"></i>
               <i class="ri-fullscreen-exit-line fs-24 quit-fullscreen"></i>
-            </button>
+            </button> -->
+             <div class="theme-toggle ">
+            <label class="toggle-switch">
+                <input type="checkbox" (change)="toggleLang()" [checked]="isRTL">
+                <span class="slider"></span>
+                <span class="label-text">{{ isRTL ? 'RTL' : 'LTR' }}</span>
+            </label>
+        </div>
           </div>
 
           <div ngbDropdown class="topbar-item">
