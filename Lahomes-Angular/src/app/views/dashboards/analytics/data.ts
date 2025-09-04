@@ -101,7 +101,7 @@ export const chartOptions: Partial<ChartOptions> = {
       right: 0,
     },
   },
-  colors: ['#eef2f7', '#eef2f7', '#604ae3', '#eef2f7'],
+  colors: ['#eef2f7', '#eef2f7', '#c8a877', '#eef2f7'],
   dataLabels: {
     enabled: !1,
   },
@@ -162,7 +162,7 @@ export const salesChart: Partial<ChartOptions> = {
       enabled: false,
     },
   },
-  colors: ['#47ad94', '#604ae3'],
+  colors: ['#47ad94', '#c8a877'],
   dataLabels: {
     enabled: false,
   },
@@ -384,7 +384,7 @@ export const salesOptions: Partial<ChartOptions> = {
       right: 0,
     },
   },
-  colors: ['#604ae3', '#604ae3', '#604ae3', '#604ae3'],
+  colors: ['#c8a877', '#c8a877', '#c8a877', '#c8a877'],
   dataLabels: {
     enabled: !1,
   },
