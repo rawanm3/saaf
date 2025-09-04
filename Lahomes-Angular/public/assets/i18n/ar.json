@@ -1,0 +1,11 @@
+{
+  "BUTTON": {
+    "SWITCH_TO_EN": "English"
+  },
+    "LANG": {
+    "RTL": "العربية",
+    "LTR": "الإنجليزية"
+  },
+    "WELCOME": "مرحباً بك في التطبيق",
+  "CHANGE_LANGUAGE": "تغيير اللغة"
+}

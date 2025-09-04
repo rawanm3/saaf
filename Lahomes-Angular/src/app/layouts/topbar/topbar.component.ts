@@ -15,6 +15,8 @@ import { SimplebarAngularModule } from 'simplebar-angular'
 import { notificationsData } from './data'
 import { DOCUMENT } from '@angular/common'
 import { logout } from '@store/authentication/authentication.actions'
+import { TranslateModule } from '@ngx-translate/core'
+import { LanguageService } from '@core/services/language.service'
 
 type FullScreenTypes = {
   requestFullscreen?: () => Promise<void>
@@ -33,22 +35,30 @@ type FullScreenTypes = {
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [SimplebarAngularModule, NgbDropdownModule, RouterLink],
+  imports: [SimplebarAngularModule, NgbDropdownModule,TranslateModule, ],
   templateUrl: './topbar.component.html',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class TopbarComponent {
   notificationList = notificationsData
   element!: FullScreenTypes
+    isRTL = false;
 
   @Output() settingsButtonClicked = new EventEmitter()
   @Output() mobileMenuButtonClicked = new EventEmitter()
 
   router = inject(Router)
   store = inject(Store)
+  // private languageService = inject(LanguageService)
+ languageService = inject(LanguageService);
 
   constructor(@Inject(DOCUMENT) private document: Document & FullScreenTypes) {
     this.element = this.document.documentElement as FullScreenTypes
+
+     // متابعة اللغة لتحديد RTL أو LTR
+    this.languageService.currentLang$.subscribe((lang: string) => {
+      this.isRTL = lang === 'ar';
+    });
   }
 
   settingMenu() {
@@ -109,11 +119,7 @@ export class TopbarComponent {
   logout() {
     this.store.dispatch(logout())
   }
-    isRTL = false;
-  isOpen = false;
-
-  toggleLang(): void {
-    this.isRTL = !this.isRTL;
-    document.documentElement.dir = this.isRTL ? 'rtl' : 'ltr';
+    toggleLang(): void {
+    this.languageService.toggleLanguage()
   }
 }

@@ -1,0 +1,11 @@
+{
+  "BUTTON": {
+    "SWITCH_TO_AR": "العربية"
+  },
+   "LANG": {
+    "RTL": "Arabic",
+    "LTR": "English"
+  },
+   "WELCOME": "Welcome to the app",
+  "CHANGE_LANGUAGE": "Change Language"
+}

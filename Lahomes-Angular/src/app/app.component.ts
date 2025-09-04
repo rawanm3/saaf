@@ -10,20 +10,23 @@ import {
   type Event,
 } from '@angular/router'
 import { TitleService } from '@core/services/title.service'
+import { TranslateModule } from '@ngx-translate/core'
 import {
   NgProgressComponent,
   NgProgressModule,
   type NgProgressRef,
 } from 'ngx-progressbar'
+import { LanguageService } from '@core/services/language.service'
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NgProgressModule ,CommonModule],
+  imports: [RouterOutlet, NgProgressModule, CommonModule, TranslateModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
+  isRTL = false
   title(title: any) {
     throw new Error('Method not implemented.')
   }
@@ -32,11 +35,16 @@ export class AppComponent implements OnInit {
 
   private titleService = inject(TitleService)
   private router = inject(Router)
+  // private languageService = inject(LanguageService)
 
   constructor() {
     this.router.events.subscribe((event: Event) => {
       this.checkRouteChange(event)
     })
+
+    // this.languageService.currentLang$.subscribe((lang: string) => {
+    //   this.isRTL = lang === 'ar'
+    // })
   }
 
   ngOnInit(): void {
@@ -58,5 +66,7 @@ export class AppComponent implements OnInit {
     }
   }
 
-
+  // toggleLang() {
+  //   this.languageService.toggleLanguage()
+  // }
 }
