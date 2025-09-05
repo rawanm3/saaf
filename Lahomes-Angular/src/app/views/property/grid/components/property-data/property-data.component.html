@@ -3,8 +3,24 @@
     <div class="col-lg-4 col-md-6">
       <div class="card overflow-hidden">
         <div class="position-relative">
-          <img [src]="item.image" alt="" class="img-fluid rounded-top" />
-          <span class="position-absolute top-0 start-0 p-1">
+          <!-- <img [src]="item.image" alt="" class="img-fluid rounded-top" /> -->
+           <div id="carousel{{ $index }}" class="carousel slide">
+             <div class="carousel-inner">
+    <div class="carousel-item" 
+         *ngFor="let img of item.images; let i = index"
+         [class.active]="i === 0">
+      <img [src]="img" class="d-block w-100 rounded-top" alt="Property image">
+    </div>
+             </div>
+             <button class="carousel-control-prev" type="button" [attr.data-bs-target]="'#carousel' + $index" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+             </button>
+             <button class="carousel-control-next" type="button" [attr.data-bs-target]="'#carousel' + $index" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+             </button>
+           </div>
+
+          <!-- <span class="position-absolute top-0 start-0 p-1">
             @if (item.type != 'Sold') {
               <button
                 type="button"
@@ -18,7 +34,7 @@
                 <iconify-icon icon="solar:bookmark-broken"></iconify-icon>
               </button>
             }
-          </span>
+          </span> -->
           <span class="position-absolute top-0 end-0 p-1">
             <span class="badge bg-{{ item.variant }} text-white fs-13">
               @if (item.type != 'Sold') {
@@ -43,58 +59,19 @@
               <p class="text-muted mb-0">{{ item.location }}</p>
             </div>
           </div>
-          <div class="row mt-2 g-2">
-            <div class="col-lg-4 col-4">
-              <span class="badge bg-light-subtle text-muted border fs-12">
-                <span class="fs-16"
-                  ><iconify-icon
-                    icon="solar:bed-broken"
-                    class="align-middle"
-                  ></iconify-icon
-                ></span>
-                {{ item.beds }} Beds
-              </span>
+        <div class="row mt-2 g-2">
+            <div class="col-12">
+              <p class="text-muted fs-14 mb-0">
+                {{ item.description }}
+              </p>
             </div>
-            <div class="col-lg-4 col-4">
-              <span class="badge bg-light-subtle text-muted border fs-12">
-                <span class="fs-16"
-                  ><iconify-icon
-                    icon="solar:bath-broken"
-                    class="align-middle"
-                  ></iconify-icon
-                ></span>
-                {{ item.bath }} Bath
-              </span>
-            </div>
-            <div class="col-lg-4 col-4">
-              <span class="badge bg-light-subtle text-muted border fs-12">
-                <span class="fs-16"
-                  ><iconify-icon
-                    icon="solar:scale-broken"
-                    class="align-middle"
-                  ></iconify-icon
-                ></span>
-                {{ item.size }}ft
-              </span>
-            </div>
-            <div class="col-lg-4 col-4">
-              <span class="badge bg-light-subtle text-muted border fs-12">
-                <span class="fs-16"
-                  ><iconify-icon
-                    icon="solar:double-alt-arrow-up-broken"
-                    class="align-middle"
-                  ></iconify-icon
-                ></span>
-                {{ item.flor }} Floor
-              </span>
-            </div>
-          </div>
+        </div>
         </div>
         <div
           class="card-footer bg-light-subtle d-flex justify-content-between align-items-center border-top"
         >
           <p class="fw-medium text-dark fs-16 mb-0">
-            {{ currency }}{{ item.price | number: '2.2' }}
+            {{ currency }}{{ item.totalValue}}
           </p>
           <div>
             <a href="javascript:void(0);" class="link-primary fw-medium"
