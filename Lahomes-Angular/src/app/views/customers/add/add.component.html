@@ -1,33 +1,58 @@
-<app-page-title title="Real Estate" subTitle="Customers Add" />
+<app-page-title title="Real Estate" subTitle="Add Property" />
 
 <div class="row">
-  <div class="col-xl-3 col-lg-12">
-    <customer-card />
+
+  <!-- كارد العقار الجديد بعد الإضافة -->
+  <div class="col-xl-3 col-lg-4">
+    <div class="card" *ngIf="createdProperty">
+      <img
+        [src]="'http://localhost:9000/' + createdProperty.images[0]"
+        class="card-img-top"
+        *ngIf="createdProperty.images?.length"
+      />
+      <div class="card-body">
+        <h5 class="card-title">
+          {{ createdProperty.name }}
+          <span class="badge bg-success">For Rent</span>
+        </h5>
+        <p class="card-text">{{ createdProperty.location }}</p>
+        <p>
+          <strong>Price:</strong>
+          {{ createdProperty.totalValue | currency }}
+        </p>
+      </div>
+    </div>
   </div>
 
-  <div class="col-xl-9 col-lg-12">
-    <div class="card">
+  <!-- الفورم -->
+  <div class="col-xl-9 col-lg-8">
+
+    <!-- رفع الصور -->
+    <div class="card mb-3">
       <div class="card-header">
-        <h4 class="card-title">Add Customer Photo</h4>
+        <h4 class="card-title">Add Property Photo</h4>
       </div>
       <div class="card-body">
-        <FileUploader />
+        <FileUploader (filesSelected)="onImagesSelected($event)"></FileUploader>
       </div>
     </div>
 
-    <customer-info />
+    <!-- بيانات العميل -->
+    <customer-info (infoChange)="onCustomerInfoChange($event)"></customer-info>
 
+    <!-- زر الإضافة -->
     <div class="mb-3 rounded">
       <div class="row justify-content-end g-2">
         <div class="col-lg-2">
-          <a href="javascript:void(0);" class="btn btn-outline-primary w-100"
-            >Create Customer</a
-          >
+          <button (click)="createProperty()" class="btn btn-outline-primary w-100">
+            Create Property
+          </button>
         </div>
         <div class="col-lg-2">
           <a href="javascript:void(0);" class="btn btn-danger w-100">Cancel</a>
         </div>
       </div>
     </div>
+
   </div>
 </div>
