@@ -6,9 +6,8 @@ import {
   NgbDropdownModule,
   NgbPaginationModule,
 } from '@ng-bootstrap/ng-bootstrap'
-import { propertyData } from '@views/property/data'
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { PropertyService } from '../../../../../core/services/property.service'
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
   selector: 'property-data',
@@ -24,22 +23,37 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class PropertyDataComponent {
-  propertyList = propertyData
-  filteredProperties = [...this.propertyList] // دي اللي هنشتغل بيها
+  propertyList: any[] = [] // هنا هنجيب الداتا من الباك
+  filteredProperties: any[] = [] // اللي هنعرضها بعد السيرش
   currency = currency
 
+  selectedProperty: any = null
 
+  constructor(
+    private modalService: NgbModal,
+    private propertyService: PropertyService
+  ) {}
 
-// -------------bassant--------------------------------------------------
-  selectedProperty: any = null;
+  ngOnInit() {
+    this.loadAllProperties()
+  }
 
-constructor(private modalService: NgbModal) {}
+  loadAllProperties() {
+    this.propertyService.getAllProperties().subscribe({
+      next: (properties) => {
+        this.propertyList = properties
+        this.filteredProperties = [...this.propertyList]
+      },
+      error: (err) => {
+        console.error('Error fetching properties', err)
+      },
+    })
+  }
 
   openPropertyModal(content: any, property: any) {
-    this.selectedProperty = property;
-    this.modalService.open(content, { size: 'lg' }); // lg = Large Modal
+    this.selectedProperty = property
+    this.modalService.open(content, { size: 'lg' })
   }
-// ------------------------------------------------------------------
 
   searchText: string = ''
   private searchTimeout: any
@@ -48,26 +62,43 @@ constructor(private modalService: NgbModal) {}
     clearTimeout(this.searchTimeout)
 
     this.searchTimeout = setTimeout(() => {
-      const search = this.searchText.toLowerCase().trim()
+      const search = this.searchText.trim()
 
       if (!search) {
-        // لو السيرش فاضي رجّع كل العقارات
         this.filteredProperties = [...this.propertyList]
         return
       }
 
-      // فلترة حسب النص اللي اتكتب
-      this.filteredProperties = this.propertyList.filter(
-        (p) =>
-          p.name.toLowerCase().includes(search) ||
-          p.propertyType.toLowerCase().includes(search) ||
-          p.type.toLowerCase().includes(search) ||
-          p.country.toLowerCase().includes(search) ||
-          String(p.size).includes(search) ||
-          String(p.price).includes(search) ||
-          String(p.beds).includes(search)
-      )
+      this.propertyService.searchProperties(search).subscribe({
+        next: (properties) => {
+          this.filteredProperties = Array.isArray(properties) ? properties : []
+          if (!this.filteredProperties.length) {
+            // فلترة محلية fallback
+            this.filteredProperties = this.clientFilter(search)
+          }
+        },
+        error: () => {
+          // fallback لو السيرفر رجّع Error
+          this.filteredProperties = this.clientFilter(search)
+        },
+      })
     }, 300)
   }
-}
 
+  private clientFilter(search: string) {
+    const s = search.toLowerCase()
+    return this.propertyList.filter((item: any) =>
+      [
+        item?.name,
+        item?.country,
+        item?.location,
+        item?.propertyType,
+        item?.type,
+      ].some((v) =>
+        String(v ?? '')
+          .toLowerCase()
+          .includes(s)
+      )
+    )
+  }
+}
