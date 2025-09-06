@@ -77,12 +77,6 @@
                 (click)="openPropertyModal(propertyModal, item)">
                 <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
               </a>
-              <a href="javascript:void(0);" class="btn btn-soft-primary btn-sm">
-                <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
-              </a>
-              <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm">
-                <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
-              </a>
             </div>
           </td>
         </tr>
@@ -109,15 +103,309 @@
 
 <!-- Modal Template -->
 <ng-template #propertyModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">{{ selectedProperty?.name }}</h5>
+  <div class="modal-header border-bottom-0 pb-0">
+    <h4 class="modal-title fw-bold text-dark">
+      <iconify-icon 
+        [icon]="isEditMode ? 'solar:pen-2-bold-duotone' : 'solar:home-bold-duotone'" 
+        class="align-middle me-2 text-primary">
+      </iconify-icon>
+      {{ isEditMode ? 'Edit Property' : selectedProperty?.name }}
+    </h4>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
-  <div class="modal-body">
-    <img [src]="selectedProperty?.images?.[0]" alt="" class="img-fluid mb-3 rounded">
-    <p><strong>Type:</strong> {{ selectedProperty?.type }}</p>
-    <p><strong>Status:</strong> {{ selectedProperty?.status }}</p>
-    <p><strong>Location:</strong> {{ selectedProperty?.location }}</p>
-    <p><strong>Price:</strong> {{ currency }}{{ selectedProperty?.totalValue | number }}</p>
+  
+  <div class="modal-body p-4">
+    <!-- View Mode -->
+    <div *ngIf="!isEditMode">
+      <!-- Property Image -->
+      <div class="text-center mb-4">
+        <img 
+          [src]="selectedProperty?.images?.[0] || 'assets/img/default-property.jpg'" 
+          alt="{{ selectedProperty?.name }}" 
+          class="img-fluid rounded-3 shadow-sm"
+          style="max-height: 300px; object-fit: cover; width: 100%;">
+      </div>
+      
+      <!-- Property Details Grid -->
+      <div class="row g-3">
+        <!-- Basic Info Card -->
+        <div class="col-md-6">
+          <div class="card border-0 bg-light-subtle h-100">
+            <div class="card-body p-3">
+              <h6 class="card-title text-primary mb-3">
+                <iconify-icon icon="solar:info-circle-bold-duotone" class="me-2"></iconify-icon>
+                Basic Information
+              </h6>
+              <div class="d-flex align-items-center mb-2">
+                <iconify-icon icon="solar:buildings-3-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Type:</span>
+                <span class="ms-2 fw-medium">{{ selectedProperty?.type || 'N/A' }}</span>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <iconify-icon icon="solar:tag-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Status:</span>
+                <span class="ms-2">
+                  <span class="badge bg-info-subtle text-info py-1 px-2 fs-12">
+                    {{ selectedProperty?.status || 'N/A' }}
+                  </span>
+                </span>
+              </div>
+              <div class="d-flex align-items-center">
+                <iconify-icon icon="solar:map-point-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Location:</span>
+                <span class="ms-2 fw-medium">{{ selectedProperty?.location || 'N/A' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Price & Features Card -->
+        <div class="col-md-6">
+          <div class="card border-0 bg-success-subtle h-100">
+            <div class="card-body p-3">
+              <h6 class="card-title text-success mb-3">
+                <iconify-icon icon="solar:dollar-minimalistic-bold-duotone" class="me-2"></iconify-icon>
+                Price & Features
+              </h6>
+              <div class="mb-3">
+                <div class="d-flex align-items-center">
+                  <iconify-icon icon="solar:dollar-bold-duotone" class="text-success me-2"></iconify-icon>
+                  <span class="h5 mb-0 text-success fw-bold">
+                    {{ currency }}{{ selectedProperty?.totalValue | number }}
+                  </span>
+                </div>
+              </div>
+              <div class="row g-2">
+                <div class="col-6" *ngIf="selectedProperty?.bedrooms">
+                  <div class="d-flex align-items-center">
+                    <iconify-icon icon="solar:bed-bold-duotone" class="text-muted me-1 fs-14"></iconify-icon>
+                    <span class="small text-muted">{{ selectedProperty?.bedrooms }} Beds</span>
+                  </div>
+                </div>
+                <div class="col-6" *ngIf="selectedProperty?.bathrooms">
+                  <div class="d-flex align-items-center">
+                    <iconify-icon icon="solar:bath-bold-duotone" class="text-muted me-1 fs-14"></iconify-icon>
+                    <span class="small text-muted">{{ selectedProperty?.bathrooms }} Baths</span>
+                  </div>
+                </div>
+                <div class="col-12" *ngIf="selectedProperty?.size">
+                  <div class="d-flex align-items-center">
+                    <iconify-icon icon="solar:ruler-bold-duotone" class="text-muted me-1 fs-14"></iconify-icon>
+                    <span class="small text-muted">{{ selectedProperty?.size }} sq ft</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Description Card (if available) -->
+        <div class="col-12" *ngIf="selectedProperty?.description">
+          <div class="card border-0 bg-warning-subtle">
+            <div class="card-body p-3">
+              <h6 class="card-title text-warning mb-2">
+                <iconify-icon icon="solar:document-text-bold-duotone" class="me-2"></iconify-icon>
+                Description
+              </h6>
+              <p class="mb-0 text-muted small">{{ selectedProperty?.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Edit Mode -->
+    <div *ngIf="isEditMode">
+      <form #editForm="ngForm" (ngSubmit)="saveProperty(modal)" class="needs-validation" novalidate>
+        <!-- Property Name & Type -->
+        <div class="card border-0 bg-light-subtle mb-3">
+          <div class="card-body p-3">
+            <h6 class="card-title text-primary mb-3">
+              <iconify-icon icon="solar:info-circle-bold-duotone" class="me-2"></iconify-icon>
+              Basic Information
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="propertyName" class="form-label fw-medium">Property Name *</label>
+                <input 
+                  type="text" 
+                  class="form-control form-control-lg border-2" 
+                  id="propertyName"
+                  [(ngModel)]="editPropertyData.name" 
+                  name="name"
+                  placeholder="Enter property name"
+                  required>
+              </div>
+              <div class="col-md-6">
+                <label for="propertyType" class="form-label fw-medium">Property Type *</label>
+                <select 
+                  class="form-select form-select-lg border-2" 
+                  id="propertyType"
+                  [(ngModel)]="editPropertyData.type" 
+                  name="type"
+                  required>
+                  <option value="">Select type</option>
+                  <option value="Apartment">Apartment</option>
+                  <option value="Villa">Villa</option>
+                  <option value="House">House</option>
+                  <option value="Penthouse">Penthouse</option>
+                  <option value="Bungalow">Bungalow</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Location & Status -->
+        <div class="card border-0 bg-info-subtle mb-3">
+          <div class="card-body p-3">
+            <h6 class="card-title text-info mb-3">
+              <iconify-icon icon="solar:map-point-bold-duotone" class="me-2"></iconify-icon>
+              Location & Status
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-8">
+                <label for="location" class="form-label fw-medium">Location *</label>
+                <input 
+                  type="text" 
+                  class="form-control form-control-lg border-2" 
+                  id="location"
+                  [(ngModel)]="editPropertyData.location" 
+                  name="location"
+                  placeholder="Enter property location"
+                  required>
+              </div>
+              <div class="col-md-4">
+                <label for="status" class="form-label fw-medium">Status *</label>
+                <select 
+                  class="form-select form-select-lg border-2" 
+                  id="status"
+                  [(ngModel)]="editPropertyData.status" 
+                  name="status"
+                  required>
+                  <option value="">Select status</option>
+                  <option value="For Sale">For Sale</option>
+                  <option value="For Rent">For Rent</option>
+                  <option value="Sold">Sold</option>
+                  <option value="Rented">Rented</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Price & Features -->
+        <div class="card border-0 bg-success-subtle mb-3">
+          <div class="card-body p-3">
+            <h6 class="card-title text-success mb-3">
+              <iconify-icon icon="solar:dollar-minimalistic-bold-duotone" class="me-2"></iconify-icon>
+              Price & Features
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="price" class="form-label fw-medium">Price *</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text bg-success text-white border-2 border-success">{{ currency }}</span>
+                  <input 
+                    type="number" 
+                    class="form-control border-2 border-success" 
+                    id="price"
+                    [(ngModel)]="editPropertyData.totalValue" 
+                    name="totalValue"
+                    placeholder="0"
+                    min="0"
+                    required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="size" class="form-label fw-medium">Size (sq ft)</label>
+                <div class="input-group input-group-lg">
+                  <input 
+                    type="number" 
+                    class="form-control border-2" 
+                    id="size"
+                    [(ngModel)]="editPropertyData.size" 
+                    name="size"
+                    placeholder="0"
+                    min="0">
+                  <span class="input-group-text border-2">sq ft</span>
+                </div>
+              </div>
+            </div>
+            <div class="row g-3 mt-1">
+              <div class="col-md-6">
+                <label for="bedrooms" class="form-label fw-medium">Bedrooms</label>
+                <input 
+                  type="number" 
+                  class="form-control form-control-lg border-2" 
+                  id="bedrooms"
+                  [(ngModel)]="editPropertyData.bedrooms" 
+                  name="bedrooms"
+                  placeholder="0"
+                  min="0">
+              </div>
+              <div class="col-md-6">
+                <label for="bathrooms" class="form-label fw-medium">Bathrooms</label>
+                <input 
+                  type="number" 
+                  class="form-control form-control-lg border-2" 
+                  id="bathrooms"
+                  [(ngModel)]="editPropertyData.bathrooms" 
+                  name="bathrooms"
+                  placeholder="0"
+                  min="0">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Description -->
+        <div class="card border-0 bg-warning-subtle">
+          <div class="card-body p-3">
+            <h6 class="card-title text-warning mb-3">
+              <iconify-icon icon="solar:document-text-bold-duotone" class="me-2"></iconify-icon>
+              Description
+            </h6>
+            <textarea 
+              class="form-control form-control-lg border-2" 
+              id="description"
+              rows="4"
+              [(ngModel)]="editPropertyData.description" 
+              name="description"
+              placeholder="Enter property description (optional)"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  
+  <div class="modal-footer bg-light-subtle border-top-0 pt-3">
+    <!-- View Mode Buttons -->
+    <div *ngIf="!isEditMode" class="d-flex gap-2 w-100 justify-content-end">
+      <button type="button" class="btn btn-light border-2 px-4" (click)="modal.dismiss()">
+        <iconify-icon icon="solar:close-circle-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Close
+      </button>
+      <button type="button" class="btn btn-primary px-4 shadow-sm" (click)="enterEditMode()">
+        <iconify-icon icon="solar:pen-2-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Edit Property
+      </button>
+      <button type="button" class="btn btn-danger px-4 shadow-sm" (click)="deleteProperty(modal)">
+        <iconify-icon icon="solar:trash-bin-minimalistic-2-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Delete
+      </button>
+    </div>
+    
+    <!-- Edit Mode Buttons -->
+    <div *ngIf="isEditMode" class="d-flex gap-2 w-100 justify-content-end">
+      <button type="button" class="btn btn-light border-2 px-4" (click)="cancelEdit()">
+        <iconify-icon icon="solar:close-circle-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Cancel
+      </button>
+      <button type="button" class="btn btn-success px-4 shadow-sm" (click)="saveProperty(modal)" [disabled]="!isFormValid()">
+        <iconify-icon icon="solar:check-circle-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Save Changes
+      </button>
+    </div>
   </div>
 </ng-template>
