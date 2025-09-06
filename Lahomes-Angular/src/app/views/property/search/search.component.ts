@@ -3,7 +3,9 @@ import { Router } from '@angular/router'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
 import { PageTitleComponent } from '@component/page-title.component'
-import { propertyData, type PropertyType } from '@views/property/data'
+import { propertyData } from '@views/property/data'
+import type { PropertyType } from '@views/property/data' // ✅ استيراد النوع بشكل صحيح
+import { PropertyService } from '@core/services/property.service'
 
 @Component({
   selector: 'app-property-search',
@@ -17,25 +19,47 @@ export class SearchComponent {
   properties: PropertyType[] = propertyData
   filteredNames: string[] = this.properties.map((p) => p.name)
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private propertyService: PropertyService
+  ) {}
 
   handleInput(event: Event) {
     const value = (event.target as HTMLInputElement).value
     this.query = value
-    const lower = value.toLowerCase()
-    this.filteredNames = this.properties
-      .filter((p) => p.name.toLowerCase().includes(lower))
-      .map((p) => p.name)
+
+    if (!value.trim()) {
+      this.filteredNames = []
+      return
+    }
+
+    // البحث عبر الباك اند
+    this.propertyService.searchProperties(value).subscribe({
+      next: (res) => {
+        // بافتراض أن الباك اند يرجع مصفوفة من العقارات
+        this.filteredNames = res.map((p: any) => p.name)
+      },
+      error: (err) => {
+        console.error('Search failed', err)
+        this.filteredNames = []
+      },
+    })
   }
 
   tryNavigateSelected() {
-    const selected = this.properties.find(
-      (p) => p.name.toLowerCase() === this.query.trim().toLowerCase()
-    )
-    if (selected) {
-      this.router.navigate(['/property/details', selected.id])
-    }
+    const selectedName = this.query.trim().toLowerCase()
+    if (!selectedName) return
+
+    this.propertyService.searchProperties(selectedName).subscribe({
+      next: (res) => {
+        const selected = res.find(
+          (p: any) => p.name.toLowerCase() === selectedName
+        )
+        if (selected) {
+          this.router.navigate(['/property/details', selected._id])
+        }
+      },
+      error: (err) => console.error(err),
+    })
   }
 }
-
-

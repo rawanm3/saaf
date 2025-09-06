@@ -57,5 +57,34 @@ export class PropertyService {
   setProperties(properties: any[]) {
     this.propertiesSource.next(properties);
   }
+    getOneRealEstate(id: string): Observable<any> {
+    return this.http.get<any>(
+      `http://localhost:3000/realestate/property/${id}`,
+      {
+        headers: this.headers,
+      }
+    )
+  }
+ // تعديل عقار
+  updateRealEstate(id: string, data: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/update-property/${id}`, data, {
+      headers: this.headers,
+    })
+  }
 
+  // حذف عقار
+  deleteRealEstate(id: string): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/delete-property/${id}`, {
+      headers:  this.headers,
+    })
+  }
+
+  // تحديث الحالة
+  updateStatus(id: string, status: string): Observable<any> {
+    return this.http.put<any>(
+      `${this.baseUrl}/update-status/${id}`,
+      { status },
+      { headers:  this.headers }
+    )
+  }
 }

@@ -9,15 +9,21 @@ export const PROPERTY_ROUTES: Route[] = [
   { path: 'list', component: ListComponent, data: { title: 'Listing Grid' } },
   { path: 'grid', component: GridComponent, data: { title: 'Listing List' } },
   {
-    path: 'details',
-    component: DetailsComponent,
-    data: { title: 'Property Overview' },
-  },
-  {
     path: 'details/:id',
     component: DetailsComponent,
     data: { title: 'Property Overview' },
   },
-  { path: 'search', component: SearchComponent, data: { title: 'Search Properties' } },
+  {
+    path: 'search',
+    component: SearchComponent,
+    data: { title: 'Search Properties' },
+  },
   { path: 'add', component: AddComponent, data: { title: 'Add Property' } },
+  {
+    path: 'properties/:id',
+    loadComponent: () =>
+      import('@views/property/details/details.component').then(
+        (m) => m.DetailsComponent
+      ),
+  },
 ]
