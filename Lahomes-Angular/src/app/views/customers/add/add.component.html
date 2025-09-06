@@ -1,24 +1,24 @@
-<app-page-title title="Real Estate" subTitle="Add Property" />
+<app-page-title title="Real Estate" subTitle="Add Customer" />
 
 <div class="row">
 
   <!-- كارد العقار الجديد بعد الإضافة -->
   <div class="col-xl-3 col-lg-4">
-    <div class="card" *ngIf="createdProperty">
+    <div class="card" *ngIf="createdCustomer">
       <img
-        [src]="'http://localhost:9000/' + createdProperty.images[0]"
+        [src]="'http://localhost:3000/' + createdCustomer.images[0]"
         class="card-img-top"
-        *ngIf="createdProperty.images?.length"
+        *ngIf="createdCustomer.images?.length"
       />
       <div class="card-body">
         <h5 class="card-title">
-          {{ createdProperty.name }}
+          {{ createdCustomer.name }}
           <span class="badge bg-success">For Rent</span>
         </h5>
-        <p class="card-text">{{ createdProperty.location }}</p>
+        <p class="card-text">{{ createdCustomer.location }}</p>
         <p>
           <strong>Price:</strong>
-          {{ createdProperty.totalValue | currency }}
+          {{ createdCustomer.totalValue | currency }}
         </p>
       </div>
     </div>
@@ -30,7 +30,7 @@
     <!-- رفع الصور -->
     <div class="card mb-3">
       <div class="card-header">
-        <h4 class="card-title">Add Property Photo</h4>
+        <h4 class="card-title">Add Customer Photo</h4>
       </div>
       <div class="card-body">
         <FileUploader (filesSelected)="onImagesSelected($event)"></FileUploader>
@@ -44,8 +44,8 @@
     <div class="mb-3 rounded">
       <div class="row justify-content-end g-2">
         <div class="col-lg-2">
-          <button (click)="createProperty()" class="btn btn-outline-primary w-100">
-            Create Property
+          <button (click)="createCustomer()" class="btn btn-outline-primary w-100">
+            Create Customer
           </button>
         </div>
         <div class="col-lg-2">

@@ -28,7 +28,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
       class="dropzone"
       [config]="dropzoneConfig"
       [message]="dropzone"
-      (success)="onUploadSuccess($event)"
+    
     ></dropzone>
 
     @if (uploadedFiles) {

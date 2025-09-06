@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,16 +9,17 @@ export class CustomersService {
 
   private apiUrl = 'http://localhost:3000/register'; // رابط الباك تيم
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
-  // عمل Header فيه توكن الأدمن
-  private getHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // التوكن المخزن للأدمن
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  // ✅ Header فيه التوكن
+  private get headers() {
+    const token = localStorage.getItem('token') || '';
+    return { Authorization: token };
   }
 
   // ✅ إضافة Customer جديد
   addCustomer(customerData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, customerData, { headers: this.getHeaders() });
+    return this.http.post<any>(this.apiUrl, customerData, { headers: this.headers });
   }
 }
+

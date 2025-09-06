@@ -1,8 +1,7 @@
 import { Component, CUSTOM_ELEMENTS_SCHEMA, EventEmitter, Output } from '@angular/core'
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectFormInputDirective } from '@core/directive/select-form-input.directive'
-import { HttpClient } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms'
+import { ReactiveFormsModule } from '@angular/forms'  
 @Component({
   selector: 'add-information',
   standalone: true,
@@ -14,34 +13,38 @@ export class AddInformationComponent {
   @Output() infoChange = new EventEmitter<any>();
   infoForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder) {
     this.infoForm = this.fb.group({
-      name: [''],
-      category: [''],
-      price: [''],
-      propertyFor: [''],
-      bedroom: [''],
-      bathroom: [''],
-      squareFoot: [''],
-      floor: [''],
-      address: [''],
-      zipcode: [''],
-      city: [''],
-      country: [''],
+      name: ['', Validators.required],
+      location: ['', Validators.required],
+      type: ['', Validators.required],
+      square: [''],
+      numberOfRooms: [''],
+      numberOfBathrooms: [''],
+      propertyNumber: [''],
+      totalValue: ['', Validators.required],
+      minInvestment: [''],
+      expectedNetYield: ['', Validators.required],
+      expectedAnnualReturn: ['', Validators.required],
+      holdingPeriodMonths: [''],
+      sharePrice: [''],
+      totalShares: ['', Validators.required],
+      isRented: [false],
+      currentRent: [''],
+      description: [''],
+      features: [''],
+      isShariahCompliant: [true],
+      countryCode: ['SA'],
+      status: ['available'],
     });
   }
 
   submitForm() {
     if (this.infoForm.valid) {
-      this.http.post('http://localhost:3000/realestate/add-property', this.infoForm.value, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-        .subscribe({
-          next: (res) => console.log('Saved Successfully ✅', res),
-          error: (err) => console.error('Save Failed ❌', err)
-        });
+      console.log('✅ InfoForm Values:', this.infoForm.value);
+      this.infoChange.emit(this.infoForm.value);
+    } else {
+      console.error('❌ Form is invalid');
     }
   }
 }

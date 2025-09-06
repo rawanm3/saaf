@@ -3,7 +3,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { PageTitleComponent } from '@component/page-title.component';
 import { FileUploaderComponent } from '@component/file-uploader/file-uploader.component';
 import { CustomerInfoComponent } from './components/customer-info/customer-info.component';
-import { PropertyService } from '@core/services/property.service';
+import { CustomersService } from '@core/services/customers.service';
 
 @Component({
   selector: 'app-add',
@@ -20,9 +20,10 @@ import { PropertyService } from '@core/services/property.service';
 })
 export class AddComponent {
   selectedImages: File[] = [];
-  createdProperty: any = null;
+  createdCustomer: any = null;
 
   customerData: any = {
+    // Customer Information
     name: '',
     email: '',
     phone: '',
@@ -36,21 +37,19 @@ export class AddComponent {
     facebook: '',
     instagram: '',
     twitter: '',
-    status: ''
-  };
-
-  propertyData: any = {
-    name: '',
+    status: '',
+    
+    // Property Information
     location: '',
     type: 'residential',
     totalValue: '',
     expectedNetYield: '',
     expectedAnnualReturn: '',
     totalShares: '',
-    description: '',
+    description: ''
   };
 
-  constructor(private propertyService: PropertyService) {}
+  constructor(private customerService: CustomersService) {}
 
   // استقبال الصور من FileUploader
   onImagesSelected(files: File[]) {
@@ -63,12 +62,12 @@ export class AddComponent {
   }
 
   // إنشاء العقار
-  createProperty() {
+  createCustomer() {    
     const formData = new FormData();
 
-    Object.keys(this.propertyData).forEach(key => {
-      if (this.propertyData[key] !== '') {
-        formData.append(key, this.propertyData[key]);
+    Object.keys(this.customerData).forEach(key => {
+      if (this.customerData[key] !== '') {
+        formData.append(key, this.customerData[key]);
       }
     });
 
@@ -83,11 +82,11 @@ export class AddComponent {
       }
     });
 
-    this.propertyService.addProperty(formData).subscribe({
+    this.customerService.addCustomer(formData).subscribe({
       next: res => {
         console.log(res);
-        this.createdProperty = res;
-        alert('✅ تم إضافة العقار بنجاح');
+        this.createdCustomer = res;
+        alert('✅ تم إضافة العقار بنجاح');  
       },
       error: err => {
         console.error(err);
