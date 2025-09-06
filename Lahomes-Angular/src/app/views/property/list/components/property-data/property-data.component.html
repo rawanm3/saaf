@@ -1,66 +1,39 @@
 <div class="card">
-  <div
-    class="card-header d-flex justify-content-between align-items-center border-bottom"
-  >
+  <div class="card-header d-flex justify-content-between align-items-center border-bottom">
     <div>
       <h4 class="card-title mb-0">All Properties List</h4>
     </div>
-    <!-----------------------------search ----------------------------->
-<div class="d-flex align-items-center gap-2">
-  <div class="position-relative" style="width: 280px; max-width: 100%;">
-    <input
-      type="text"
-      placeholder="Search properties..."
-      [(ngModel)]="searchText"
-      (input)="filterProperties()"
-      class="form-control pe-5 rounded-pill border shadow-sm
-             dark:bg-gray-800 dark:text-white dark:border-gray-700"
-    />
-    <button
-      type="button"
-      (click)="filterProperties()"
-      class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-1 rounded-circle d-flex align-items-center justify-content-center"
-      style="width: 36px; height: 36px;"
-    >
-      <i class="ri-search-line"></i>
-    </button>
-  </div>
-</div>
 
-    <div ngbDropdown>
-      <a
-        ngbDropdownToggle
-        role="button"
-        class="btn btn-sm btn-outline-light rounded"
-      >
-        This Month
-      </a>
-      <div ngbDropdownMenu class="dropdown-menu-end">
-        <a href="javascript:void(0);" class="dropdown-item">Download</a>
-
-        <a href="javascript:void(0);" class="dropdown-item">Export</a>
-
-        <a href="javascript:void(0);" class="dropdown-item">Import</a>
+    <!-- Search -->
+    <div class="d-flex align-items-center gap-2">
+      <div class="position-relative" style="width: 280px; max-width: 100%;">
+        <input
+          type="text"
+          placeholder="Search properties..."
+          [(ngModel)]="searchText"
+          (input)="filterProperties()"
+          class="form-control pe-5 rounded-pill border shadow-sm
+                 dark:bg-gray-800 dark:text-white dark:border-gray-700"
+        />
+        <button
+          type="button"
+          (click)="filterProperties()"
+          class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-1 rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 36px; height: 36px;"
+        >
+          <i class="ri-search-line"></i>
+        </button>
       </div>
     </div>
   </div>
+
+  <!-- Table -->
   <div class="table-responsive">
-    <table
-      class="table align-middle text-nowrap table-hover table-centered mb-0"
-    >
+    <table class="table align-middle text-nowrap table-hover table-centered mb-0">
       <thead class="bg-light-subtle">
         <tr>
-          <th style="width: 20px">
-            <div class="form-check">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="customCheck1"
-              />
-              <label class="form-check-label" for="customCheck1"></label>
-            </div>
-          </th>
-          <th>Properties Photo & Name</th>
+          <!-- العمود الأول فيه padding-start -->
+          <th class="ps-3">Properties Photo & Name</th>
           <th>Size</th>
           <th>Property Type</th>
           <th>Rent/Sale</th>
@@ -70,105 +43,61 @@
           <th>Action</th>
         </tr>
       </thead>
-<tbody>
-  @for (item of filteredProperties; track $index) {
-    <tr>
-      <td>
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" />
-        </div>
-      </td>
-
-      <!-- الصورة والاسم -->
-      <td>
-        <div class="d-flex align-items-center gap-2">
-          <div>
-            <img
-              [src]="item.images?.[0] || 'assets/img/default-property.jpg'"
-              alt="{{ item.name }}"
-              class="avatar-md rounded border border-light border-3"
-            />
-          </div>
-          <div>
-            <a href="javascript:void(0);" class="text-dark fw-medium fs-15">
-              {{ item.name }}
-            </a>
-          </div>
-        </div>
-      </td>
-
-      <!-- المساحة (لو مش موجودة في DB ممكن تحط مكانها '-') -->
-      <td>-</td>
-
-      <!-- النوع -->
-      <td>{{ item.type }}</td>
-
-      <!-- حالة العقار -->
-      <td>
-        <span
-          class="badge bg-info-subtle text-info py-1 px-2 fs-13"
-        >
-          {{ item.status }}
-        </span>
-      </td>
-
-      <!-- غرف نوم (غير متوفر في الداتا الحقيقية) -->
-      <td>-</td>
-
-      <!-- الموقع -->
-      <td>{{ item.location }}</td>
-
-      <!-- السعر -->
-      <td>{{ currency }}{{ item.totalValue | number }}</td>
-
-      <!-- الأكشن -->
-      <td>
-        <div class="d-flex gap-2">
-          <a href="javascript:void(0);" class="btn btn-light btn-sm"
-            (click)="openPropertyModal(propertyModal, item)">
-            <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
-          </a>
-          <a href="javascript:void(0);" class="btn btn-soft-primary btn-sm">
-            <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
-          </a>
-          <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm">
-            <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
-          </a>
-        </div>
-      </td>
-    </tr>
-  }
-</tbody>
-
+      <tbody>
+        <tr *ngFor="let item of paginatedProperties">
+          <td class="ps-3">
+            <div class="d-flex align-items-center gap-2">
+              <div>
+                <img
+                  [src]="item.images?.[0] || 'assets/img/default-property.jpg'"
+                  alt="{{ item.name }}"
+                  class="avatar-md rounded border border-light border-3"
+                />
+              </div>
+              <div>
+                <a href="javascript:void(0);" class="text-dark fw-medium fs-15">
+                  {{ item.name }}
+                </a>
+              </div>
+            </div>
+          </td>
+          <td>-</td>
+          <td>{{ item.type }}</td>
+          <td>
+            <span class="badge bg-info-subtle text-info py-1 px-2 fs-13">
+              {{ item.status }}
+            </span>
+          </td>
+          <td>-</td>
+          <td>{{ item.location }}</td>
+          <td>{{ currency }}{{ item.totalValue | number }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <a href="javascript:void(0);" class="btn btn-light btn-sm"
+                (click)="openPropertyModal(propertyModal, item)">
+                <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
+              </a>
+              <a href="javascript:void(0);" class="btn btn-soft-primary btn-sm">
+                <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
+              </a>
+              <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm">
+                <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
     </table>
   </div>
-  <!-- ---------------------------------bassant----------------------------------------------- -->
-<ng-template #propertyModal let-modal>
-  <div class="modal-header">
-    <h5 class="modal-title">{{ selectedProperty?.name }}</h5>
-    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
-  </div>
-  <div class="modal-body">
-    <img [src]="selectedProperty?.image" alt="" class="img-fluid mb-3 rounded">
-    <p><strong>Size:</strong> {{ selectedProperty?.size }} ft</p>
-    <p><strong>Type:</strong> {{ selectedProperty?.propertyType }}</p>
-    <p><strong>Bedrooms:</strong> {{ selectedProperty?.beds }}</p>
-    <p><strong>Location:</strong> {{ selectedProperty?.country }}</p>
-    <p><strong>Price:</strong> {{ currency }}{{ selectedProperty?.price | number:'2.2' }}</p>
-  </div>
-</ng-template>
 
-
-
-
-
-
-<!-- ------------------------------------------------------------------------------- -->
+  <!-- Pagination -->
   <div class="card-footer">
     <nav aria-label="Page navigation example">
       <ngb-pagination
-        [collectionSize]="30"
-        [page]="1"
+        [collectionSize]="collectionSize"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        (pageChange)="refreshProperties()"
         class="pagination justify-content-end mb-0"
       >
         <ng-template ngbPaginationPrevious>Previous</ng-template>
@@ -177,3 +106,18 @@
     </nav>
   </div>
 </div>
+
+<!-- Modal Template -->
+<ng-template #propertyModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title">{{ selectedProperty?.name }}</h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  <div class="modal-body">
+    <img [src]="selectedProperty?.images?.[0]" alt="" class="img-fluid mb-3 rounded">
+    <p><strong>Type:</strong> {{ selectedProperty?.type }}</p>
+    <p><strong>Status:</strong> {{ selectedProperty?.status }}</p>
+    <p><strong>Location:</strong> {{ selectedProperty?.location }}</p>
+    <p><strong>Price:</strong> {{ currency }}{{ selectedProperty?.totalValue | number }}</p>
+  </div>
+</ng-template>

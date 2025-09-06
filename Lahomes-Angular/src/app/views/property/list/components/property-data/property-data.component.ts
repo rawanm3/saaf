@@ -25,9 +25,16 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap'
 export class PropertyDataComponent {
   propertyList: any[] = [] // هنا هنجيب الداتا من الباك
   filteredProperties: any[] = [] // اللي هنعرضها بعد السيرش
+  paginatedProperties: any[] = [] // اللي هنعرضها في الصفحة الحالية
+
   currency = currency
 
   selectedProperty: any = null
+
+  // pagination variables
+  page = 1
+  pageSize = 10
+  collectionSize = 0
 
   constructor(
     private modalService: NgbModal,
@@ -39,10 +46,12 @@ export class PropertyDataComponent {
   }
 
   loadAllProperties() {
-    this.propertyService.getAllProperties().subscribe({
-      next: (properties) => {
-        this.propertyList = properties
+    this.propertyService.getAllRealEstates().subscribe({
+      next: (res) => {
+        this.propertyList = res.properties || [] // ناخد ال array من جوا
         this.filteredProperties = [...this.propertyList]
+        this.collectionSize = this.filteredProperties.length
+        this.refreshProperties()
       },
       error: (err) => {
         console.error('Error fetching properties', err)
@@ -66,20 +75,25 @@ export class PropertyDataComponent {
 
       if (!search) {
         this.filteredProperties = [...this.propertyList]
+        this.collectionSize = this.filteredProperties.length
+        this.refreshProperties()
         return
       }
 
       this.propertyService.searchProperties(search).subscribe({
-        next: (properties) => {
+        next: (res) => {
+          const properties = res.properties || []
           this.filteredProperties = Array.isArray(properties) ? properties : []
           if (!this.filteredProperties.length) {
-            // فلترة محلية fallback
             this.filteredProperties = this.clientFilter(search)
           }
+          this.collectionSize = this.filteredProperties.length
+          this.refreshProperties()
         },
         error: () => {
-          // fallback لو السيرفر رجّع Error
           this.filteredProperties = this.clientFilter(search)
+          this.collectionSize = this.filteredProperties.length
+          this.refreshProperties()
         },
       })
     }, 300)
@@ -100,5 +114,11 @@ export class PropertyDataComponent {
           .includes(s)
       )
     )
+  }
+
+  refreshProperties() {
+    const start = (this.page - 1) * this.pageSize
+    const end = start + this.pageSize
+    this.paginatedProperties = this.filteredProperties.slice(start, end)
   }
 }
