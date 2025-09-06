@@ -27,22 +27,7 @@
   </div>
 </div>
 
-    <div ngbDropdown>
-      <a
-        ngbDropdownToggle
-        role="button"
-        class="btn btn-sm btn-outline-light rounded"
-      >
-        This Month
-      </a>
-      <div ngbDropdownMenu class="dropdown-menu-end">
-        <a href="javascript:void(0);" class="dropdown-item">Download</a>
-
-        <a href="javascript:void(0);" class="dropdown-item">Export</a>
-
-        <a href="javascript:void(0);" class="dropdown-item">Import</a>
-      </div>
-    </div>
+   
   </div>
   <div class="table-responsive">
     <table
@@ -70,90 +55,76 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody>
-        @for (item of filteredProperties; track $index) {
-          <tr>
-            <td>
-              <div class="form-check">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  id="customCheck2"
-                />
-                <label class="form-check-label" for="customCheck2"
-                  >&nbsp;</label
-                >
-              </div>
-            </td>
-            <td>
-              <div class="d-flex align-items-center gap-2">
-                <div>
-                  <img
-                    [src]="item.image"
-                    alt=""
-                    class="avatar-md rounded border border-light border-3"
-                  />
-                </div>
-                <div>
-                  <a
-                    href="javascript:void(0);"
-                    class="text-dark fw-medium fs-15"
-                    >{{ item.name }}</a
-                  >
-                </div>
-              </div>
-            </td>
-            <td>{{ item.size }}ft</td>
-            <td>{{ item.propertyType }}</td>
-            <td>
-              <span
-                class="badge bg-{{ item.variant }}-subtle text-{{
-                  item.variant
-                }} py-1 px-2 fs-13"
-                >{{ item.type }}</span
-              >
-            </td>
-            <td>
-              <p class="mb-0">
-                <iconify-icon
-                  icon="solar:bed-broken"
-                  class="align-middle fs-16"
-                ></iconify-icon>
-                {{ item.beds }}
-              </p>
-            </td>
-            <td>{{ item.country }}</td>
-            <td>{{ currency }}{{ item.price | number: '2.2' }}</td>
-            <td>
-              <div class="d-flex gap-2">
-                <!-- ------------------------------bassant-------------------------------------------------- -->
-               <a 
-  href="javascript:void(0);" 
-  class="btn btn-light btn-sm"
-  (click)="openPropertyModal(propertyModal, item)">
-  <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
-</a>
+<tbody>
+  @for (item of filteredProperties; track $index) {
+    <tr>
+      <td>
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" />
+        </div>
+      </td>
 
-                <!-- -------------------------------------------------------------------------------- -->
-                <a
-                  href="javascript:void(0);"
-                  class="btn btn-soft-primary btn-sm"
-                  ><iconify-icon
-                    icon="solar:pen-2-broken"
-                    class="align-middle fs-18"
-                  ></iconify-icon
-                ></a>
-                <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm"
-                  ><iconify-icon
-                    icon="solar:trash-bin-minimalistic-2-broken"
-                    class="align-middle fs-18"
-                  ></iconify-icon
-                ></a>
-              </div>
-            </td>
-          </tr>
-        }
-      </tbody>
+      <!-- الصورة والاسم -->
+      <td>
+        <div class="d-flex align-items-center gap-2">
+          <div>
+            <img
+              [src]="item.images?.[0] || 'assets/img/default-property.jpg'"
+              alt="{{ item.name }}"
+              class="avatar-md rounded border border-light border-3"
+            />
+          </div>
+          <div>
+            <a href="javascript:void(0);" class="text-dark fw-medium fs-15">
+              {{ item.name }}
+            </a>
+          </div>
+        </div>
+      </td>
+
+      <!-- المساحة (لو مش موجودة في DB ممكن تحط مكانها '-') -->
+      <td>-</td>
+
+      <!-- النوع -->
+      <td>{{ item.type }}</td>
+
+      <!-- حالة العقار -->
+      <td>
+        <span
+          class="badge bg-info-subtle text-info py-1 px-2 fs-13"
+        >
+          {{ item.status }}
+        </span>
+      </td>
+
+      <!-- غرف نوم (غير متوفر في الداتا الحقيقية) -->
+      <td>-</td>
+
+      <!-- الموقع -->
+      <td>{{ item.location }}</td>
+
+      <!-- السعر -->
+      <td>{{ currency }}{{ item.totalValue | number }}</td>
+
+      <!-- الأكشن -->
+      <td>
+        <div class="d-flex gap-2">
+          <a href="javascript:void(0);" class="btn btn-light btn-sm"
+            (click)="openPropertyModal(propertyModal, item)">
+            <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-soft-primary btn-sm">
+            <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
+          </a>
+          <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm">
+            <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
+          </a>
+        </div>
+      </td>
+    </tr>
+  }
+</tbody>
+
     </table>
   </div>
   <!-- ---------------------------------bassant----------------------------------------------- -->
@@ -164,11 +135,11 @@
   </div>
   <div class="modal-body">
     <img [src]="selectedProperty?.image" alt="" class="img-fluid mb-3 rounded">
-    <p><strong>Size:</strong> {{ selectedProperty?.size }} ft</p>
-    <p><strong>Type:</strong> {{ selectedProperty?.propertyType }}</p>
-    <p><strong>Bedrooms:</strong> {{ selectedProperty?.beds }}</p>
-    <p><strong>Location:</strong> {{ selectedProperty?.country }}</p>
-    <p><strong>Price:</strong> {{ currency }}{{ selectedProperty?.price | number:'2.2' }}</p>
+    <p><strong>Total Shares:</strong> {{ selectedProperty?.totalShares }}</p>
+    <p><strong>Type:</strong> {{ selectedProperty?.type }}</p>
+    <p><strong>Description:</strong> {{ selectedProperty?.description }}</p>
+    <p><strong>Location:</strong> {{ selectedProperty?.location }}</p>
+    <p><strong>Price:</strong> {{ currency }}{{ selectedProperty?.totalValue | number:'2.2' }}</p>
   </div>
 </ng-template>
 

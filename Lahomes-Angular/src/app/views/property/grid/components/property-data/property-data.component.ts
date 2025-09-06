@@ -17,23 +17,25 @@ export class PropertyDataComponent implements OnInit {
   currency = '$'; // تقدر تغيريها حسب العملة
 
   constructor(private propertyService: PropertyService) {}
+ngOnInit(): void {
+  this.loadProperties();
 
-  ngOnInit(): void {
-    this.loadProperties();
-  }
+  // 👂 استمع للتحديثات (من Apply Filters أو غيره)
+  this.propertyService.properties$.subscribe((data) => {
+    if (data.length) {
+      this.propertyList = data;
+    }
+  });
+}
 
-  loadProperties() {
-    this.propertyService.getAllRealEstates().subscribe({
-      next: (res) => {
-        // لو الـ backend بيرجع { properties: [...] }
-        this.propertyList = res.properties;
+loadProperties() {
+  this.propertyService.getAllRealEstates().subscribe({
+    next: (res) => {
+      this.propertyList = res.properties ?? res;
+      this.propertyService.setProperties(this.propertyList); // 👈 تحميل أولي
+    },
+    error: (err) => console.error('Error fetching properties:', err),
+  });
+}
 
-        // لو بيرجع Array مباشرة
-        // this.propertyList = res;
-      },
-      error: (err) => {
-        console.error('Error fetching properties:', err);
-      }
-    });
-  }
 }
