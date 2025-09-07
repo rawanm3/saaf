@@ -30,6 +30,8 @@ export class PropertyDataComponent {
   currency = currency
 
   selectedProperty: any = null
+  isEditMode: boolean = false
+  editPropertyData: any = {}
 
   // pagination variables
   page = 1
@@ -120,5 +122,80 @@ export class PropertyDataComponent {
     const start = (this.page - 1) * this.pageSize
     const end = start + this.pageSize
     this.paginatedProperties = this.filteredProperties.slice(start, end)
+  }
+
+  enterEditMode() {
+    this.isEditMode = true
+    // Pre-fill the form with current property data
+    this.editPropertyData = {
+      name: this.selectedProperty?.name || '',
+      type: this.selectedProperty?.type || '',
+      location: this.selectedProperty?.location || '',
+      status: this.selectedProperty?.status || '',
+      totalValue: this.selectedProperty?.totalValue || 0,
+      bedrooms: this.selectedProperty?.bedrooms || 0,
+      bathrooms: this.selectedProperty?.bathrooms || 0,
+      size: this.selectedProperty?.size || 0,
+      description: this.selectedProperty?.description || ''
+    }
+  }
+
+  cancelEdit() {
+    this.isEditMode = false
+    this.editPropertyData = {}
+  }
+
+  isFormValid(): boolean {
+    return !!(
+      this.editPropertyData.name?.trim() &&
+      this.editPropertyData.type &&
+      this.editPropertyData.location?.trim() &&
+      this.editPropertyData.status &&
+      this.editPropertyData.totalValue > 0
+    )
+  }
+
+  saveProperty(modal: any) {
+    if (!this.selectedProperty?._id) {
+      console.error('No property selected for editing')
+      return
+    }
+
+    this.propertyService.updateRealEstate(this.selectedProperty._id, this.editPropertyData).subscribe({
+      next: (response) => {
+        console.log('Property updated successfully', response)
+        this.isEditMode = false
+        this.editPropertyData = {}
+        modal.dismiss()
+        this.loadAllProperties() // Refresh the list
+      },
+      error: (error) => {
+        console.error('Error updating property', error)
+        alert('Failed to update property. Please try again.')
+      }
+    })
+  }
+
+  deleteProperty(modal: any) {
+    if (!this.selectedProperty?._id) {
+      console.error('No property selected for deletion')
+      return
+    }
+
+    const confirmDelete = confirm(`Are you sure you want to delete "${this.selectedProperty.name}"? This action cannot be undone.`)
+    
+    if (confirmDelete) {
+      this.propertyService.deleteRealEstate(this.selectedProperty._id).subscribe({
+        next: (response) => {
+          console.log('Property deleted successfully', response)
+          modal.dismiss()
+          this.loadAllProperties() // Refresh the list
+        },
+        error: (error) => {
+          console.error('Error deleting property', error)
+          alert('Failed to delete property. Please try again.')
+        }
+      })
+    }
   }
 }
