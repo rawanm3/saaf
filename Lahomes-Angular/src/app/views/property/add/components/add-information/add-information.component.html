@@ -5,155 +5,202 @@
   <div class="card-body">
     <form [formGroup]="infoForm" (ngSubmit)="submitForm()">
       <div class="row">
-        <!-- اسم العقار -->
+        <!-- Property Name -->
         <div class="col-lg-6">
           <div class="mb-3">
-            <label class="form-label">Property Name</label>
+            <label for="property-name" class="form-label">Property Name</label>
             <input
               type="text"
+              id="property-name"
               class="form-control"
+              placeholder="Name"
               formControlName="name"
-              placeholder="Enter property name"
             />
           </div>
         </div>
 
-        <!-- الموقع -->
+        <!-- Categories -->
         <div class="col-lg-6">
-          <div class="mb-3">
-            <label class="form-label">Location</label>
+          <label for="property-categories" class="form-label"
+            >Property Categories</label
+          >
+          <select
+            class="form-control"
+            id="property-categories"
+            formControlName="category"
+          >
+            <option value="Villas">Villas</option>
+            <option value="Residences">Residences</option>
+            <option value="Bungalow">Bungalow</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Penthouse">Penthouse</option>
+          </select>
+        </div>
+
+        <!-- Price -->
+        <div class="col-lg-4">
+          <label for="property-price" class="form-label">Price</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text fs-20 px-2 py-0"
+              ><i class="ri-money-dollar-circle-line"></i
+            ></span>
             <input
-              type="text"
+              type="number"
+              id="property-price"
               class="form-control"
-              formControlName="location"
-              placeholder="Enter location"
+              placeholder="000"
+              formControlName="price"
             />
           </div>
         </div>
 
-        <!-- النوع -->
+        <!-- Property For -->
         <div class="col-lg-4">
-          <label class="form-label">Type</label>
-          <select class="form-control" formControlName="type">
-            <option value="residential">Residential</option>
-            <option value="commercial">Commercial</option>
-            <option value="fund">Fund</option>
+          <label for="property-for" class="form-label">Property For</label>
+          <select class="form-control" id="property-for" formControlName="propertyFor">
+            <option value="Sale">Sale</option>
+            <option value="Rent">Rent</option>
+            <option value="Other">Other</option>
           </select>
         </div>
 
-        <!-- المساحة -->
+        <!-- Bedroom -->
         <div class="col-lg-4">
-          <label class="form-label">Square (m²)</label>
-          <input type="number" class="form-control" formControlName="square" />
+          <label for="property-bedroom" class="form-label">Bedroom</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text fs-20"
+              ><iconify-icon icon="solar:bed-broken"></iconify-icon
+            ></span>
+            <input
+              type="number"
+              id="property-bedroom"
+              class="form-control"
+              formControlName="bedroom"
+            />
+          </div>
         </div>
 
-        <!-- عدد الغرف -->
+        <!-- Bathroom -->
         <div class="col-lg-4">
-          <label class="form-label">Rooms</label>
-          <input type="number" class="form-control" formControlName="numberOfRooms" />
+          <label for="property-bathroom" class="form-label">Bathroom</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text fs-20"
+              ><iconify-icon icon="solar:bath-broken"></iconify-icon
+            ></span>
+            <input
+              type="number"
+              id="property-bathroom"
+              class="form-control"
+              formControlName="bathroom"
+            />
+          </div>
         </div>
 
-        <!-- عدد الحمامات -->
+        <!-- Square Foot -->
         <div class="col-lg-4">
-          <label class="form-label">Bathrooms</label>
-          <input type="number" class="form-control" formControlName="numberOfBathrooms" />
+          <label for="property-square-foot" class="form-label">Square Foot</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text fs-20"
+              ><iconify-icon icon="solar:scale-broken"></iconify-icon
+            ></span>
+            <input
+              type="number"
+              id="property-square-foot"
+              class="form-control"
+              formControlName="squareFoot"
+            />
+          </div>
         </div>
 
-        <!-- رقم العقار -->
+        <!-- Floor -->
         <div class="col-lg-4">
-          <label class="form-label">Property Number</label>
-          <input type="text" class="form-control" formControlName="propertyNumber" />
+          <label for="property-floor" class="form-label">Floor</label>
+          <div class="input-group mb-3">
+            <span class="input-group-text fs-20"
+              ><iconify-icon icon="solar:double-alt-arrow-up-broken"></iconify-icon
+            ></span>
+            <input
+              type="number"
+              id="property-floor"
+              class="form-control"
+              formControlName="floor"
+            />
+          </div>
         </div>
 
-        <!-- القيم المالية -->
-        <div class="col-lg-4">
-          <label class="form-label">Total Value</label>
-          <input type="number" class="form-control" formControlName="totalValue" />
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label">Minimum Investment</label>
-          <input type="number" class="form-control" formControlName="minInvestment" />
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label">Expected Net Yield %</label>
-          <input type="number" class="form-control" formControlName="expectedNetYield" />
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label">Annual ROI %</label>
-          <input type="number" class="form-control" formControlName="expectedAnnualReturn" />
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label">Holding Period (months)</label>
-          <input type="number" class="form-control" formControlName="holdingPeriodMonths" />
-        </div>
-
-        <!-- الأسهم -->
-        <div class="col-lg-4">
-          <label class="form-label">Share Price</label>
-          <input type="number" class="form-control" formControlName="sharePrice" />
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label">Total Shares</label>
-          <input type="number" class="form-control" formControlName="totalShares" />
-        </div>
-
-        <!-- الإيجارات -->
-        <div class="col-lg-4">
-          <label class="form-label">Is Rented?</label>
-          <select class="form-control" formControlName="isRented">
-            <option [value]="true">Yes</option>
-            <option [value]="false">No</option>
-          </select>
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label">Current Rent</label>
-          <input type="number" class="form-control" formControlName="currentRent" />
-        </div>
-
-        <div class="col-lg-4">
-          <label class="form-label">Rent Frequency</label>
-          <select class="form-control" formControlName="rentDistributionFrequency">
-            <option value="monthly">Monthly</option>
-            <option value="quarterly">Quarterly</option>
-          </select>
-        </div>
-
-        <!-- الوصف -->
+        <!-- Address -->
         <div class="col-lg-12">
           <div class="mb-3">
-            <label class="form-label">Description</label>
+            <label for="property-address" class="form-label">Property Address</label>
             <textarea
               class="form-control"
+              id="property-address"
               rows="3"
-              formControlName="description"
+              placeholder="Enter address"
+              formControlName="address"
             ></textarea>
           </div>
         </div>
 
-        <!-- متوافق مع الشريعة -->
+        <!-- Zip Code -->
         <div class="col-lg-4">
-          <label class="form-label">Shariah Compliant?</label>
-          <select class="form-control" formControlName="isShariahCompliant">
-            <option [value]="true">Yes</option>
-            <option [value]="false">No</option>
+          <div class="mb-3">
+            <label for="property-zipcode" class="form-label">Zip-Code</label>
+            <input
+              type="number"
+              id="property-zipcode"
+              class="form-control"
+              placeholder="zip-code"
+              formControlName="zipcode"
+            />
+          </div>
+        </div>
+
+        <!-- City -->
+        <div class="col-lg-4">
+          <label for="choices-city" class="form-label">City</label>
+          <select class="form-control" id="choices-city" formControlName="city">
+            <option value="">Choose a city</option>
+            <optgroup label="UK">
+              <option value="London">London</option>
+              <option value="Manchester">Manchester</option>
+              <option value="Liverpool">Liverpool</option>
+            </optgroup>
+            <optgroup label="FR">
+              <option value="Paris">Paris</option>
+              <option value="Lyon">Lyon</option>
+              <option value="Marseille">Marseille</option>
+            </optgroup>
+            <optgroup label="US">
+              <option value="New York">New York</option>
+              <option value="Michigan">Michigan</option>
+            </optgroup>
+            <optgroup label="CA">
+              <option value="Montreal">Montreal</option>
+              <option value="Toronto">Toronto</option>
+              <option value="Vancouver">Vancouver</option>
+            </optgroup>
           </select>
         </div>
 
-        <!-- الحالة -->
+        <!-- Country -->
         <div class="col-lg-4">
-          <label class="form-label">Status</label>
-          <select class="form-control" formControlName="status">
-            <option value="available">Available</option>
-            <option value="funded">Funded</option>
-            <option value="matured">Matured</option>
-            <option value="sold">Sold</option>
-            <option value="pending">Pending</option>
+          <label for="choices-country" class="form-label">Country</label>
+          <select
+            class="form-control"
+            id="choices-country"
+            formControlName="country"
+          >
+            <option value="">Choose a country</option>
+            <option value="United Kingdom">United Kingdom</option>
+            <option value="France">France</option>
+            <option value="Netherlands">Netherlands</option>
+            <option value="USA">U.S.A</option>
+            <option value="Canada">Canada</option>
+            <option value="India">India</option>
+            <option value="Germany">Germany</option>
+            <option value="Spain">Spain</option>
+            <option value="UAE">United Arab Emirates</option>
           </select>
         </div>
       </div>
