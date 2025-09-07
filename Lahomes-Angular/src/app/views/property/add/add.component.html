@@ -2,13 +2,17 @@
 
 <div class="row">
   <!-- كارد العقار الجديد بعد الإضافة -->
-  <div class="col-xl-3 col-lg-4">
-    <div class="card" *ngIf="createdProperty">
+  <div class="col-xl-3 col-lg-4" *ngIf="createdProperty">
+    <div class="card">
       <img
-        [src]="'http://localhost:9000/' + createdProperty.images[0]"
+        [src]="'http://localhost:9000/' + (createdProperty.images?.[0] || '')"
         class="card-img-top"
-        *ngIf="createdProperty.images?.length"
+        *ngIf="createdProperty.images?.length; else noImage"
       />
+      <ng-template #noImage>
+        <img src="assets/images/properties/default.jpg" class="card-img-top" />
+      </ng-template>
+
       <div class="card-body">
         <h5 class="card-title">
           {{ createdProperty.name }}
@@ -16,8 +20,10 @@
         </h5>
         <p class="card-text">{{ createdProperty.location }}</p>
         <p>
-          <strong>Price:</strong>
-          {{ createdProperty.totalValue | currency }}
+          <strong>Price:</strong> {{ createdProperty.totalValue | currency }}
+        </p>
+        <p>
+          <strong>Total Shares:</strong> {{ createdProperty.totalShares }}
         </p>
       </div>
     </div>
@@ -25,16 +31,7 @@
 
   <!-- الفورم -->
   <div class="col-xl-9 col-lg-8">
-    <div class="card">
-      <div class="card-header">
-        <h4 class="card-title">Add Property Photo</h4>
-      </div>
-      <div class="card-body">
-        <FileUploader (filesSelected)="onImagesSelected($event)" />
-      </div>
-    </div>
-
-    <add-information />
+    <add-information (infoChange)="onInfoChange($event)"></add-information>
 
     <div class="mb-3 rounded">
       <div class="row justify-content-end g-2">
@@ -53,4 +50,3 @@
     </div>
   </div>
 </div>
-<add-information (infoChange)="onInfoChange($event)" />
