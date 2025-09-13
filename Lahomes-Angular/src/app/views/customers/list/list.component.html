@@ -1,40 +1,25 @@
-<app-page-title title="Customers" subTitle="Customer List" />
+<app-page-title title="Customers" subTitle="Listing List" />
 
-<div class="row d-none">
-  <div class="col-lg-12">
-    <div class="card">
-      <div class="card-header border-0">
-        <div class="row justify-content-between">
-          <div class="col-lg-6">
-            <div class="row align-items-center">
-              <div class="col-lg-6">
-                <form class="app-search d-none d-md-block me-auto">
-                  <div class="position-relative">
-                    <input type="search" class="form-control" placeholder="Search Customer" autocomplete="off"
-                      value="" />
-                    <iconify-icon icon="solar:magnifer-broken" class="search-widget-icon"></iconify-icon>
-                  </div>
-                </form>
-              </div>
-              <div class="col-lg-4">
-                <h5 class="text-dark fw-medium mb-0">
-                  501 <span class="text-muted"> Customers</span>
-                </h5>
-              </div>
+<div class="row">
+  <!-- Stats Cards -->
+  <div class="col-xl-3 col-md-6" *ngFor="let stat of stateList">
+    <div class="card border-0 shadow-sm">
+      <div class="card-body p-3">
+        <div class="d-flex align-items-center gap-3">
+          <div class="avatar-sm flex-shrink-0">
+            <div class="avatar-title bg-{{stat.variant}}-subtle text-{{stat.variant}} rounded-3 d-flex align-items-center justify-content-center">
+              <iconify-icon [icon]="stat.icon" class="fs-22"></iconify-icon>
             </div>
           </div>
-          <div class="col-lg-6">
-            <div class="text-md-end mt-3 mt-md-0">
-              <button type="button" class="btn btn-outline-primary me-1">
-                <i class="ri-settings-2-line me-1"></i>More Setting
-              </button>
-              <button type="button" class="btn btn-outline-primary me-1">
-                <i class="ri-filter-line me-1"></i> Filters
-              </button>
-              <button type="button" class="btn btn-success me-1">
-                <i class="ri-add-line"></i> New Customer
-              </button>
-            </div>
+          <div class="flex-grow-1">
+            <p class="text-muted mb-1 fs-13">{{ stat.title }}</p>
+            <h5 class="mb-1">{{ stat.amount }}</h5>
+            <p class="mb-0">
+              <span class="badge bg-{{stat.variant}}-subtle text-{{stat.variant}} fs-12">
+                {{ stat.change > 0 ? '+' : '' }}{{ stat.change }}%
+              </span>
+              <span class="text-muted small ms-2">than last period</span>
+            </p>
           </div>
         </div>
       </div>
@@ -42,129 +27,336 @@
   </div>
 </div>
 
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center border-bottom">
+    <div>
+      <h4 class="card-title mb-0">All Customers List</h4>
+    </div>
 
-<div class="row">
-  <div class="col-xl-12">
-    <div class="card">
-      <div class="card-header d-flex justify-content-between align-items-center border-bottom">
-        <div>
-          <h4 class="card-title">All Customer List</h4>
-        </div>
-
-        <!-- --------------------------- search --------------------------->
-        <div class="col-md-6 text-end">
-      <div class="input-group" style="max-width: 300px; margin-left: auto;">
+    <!-- Search -->
+    <div class="d-flex align-items-center gap-2">
+      <div class="position-relative" style="width: 280px; max-width: 100%;">
         <input
           type="text"
-          class="form-control"
           placeholder="Search customers..."
           [(ngModel)]="searchText"
           (input)="filterCustomers()"
+          class="form-control pe-5 rounded-pill border shadow-sm
+                 dark:bg-gray-800 dark:text-white dark:border-gray-700"
         />
-        <button class="btn btn-primary" type="button" (click)="filterCustomers()">
+        <button
+          type="button"
+          (click)="filterCustomers()"
+          class="btn btn-primary position-absolute top-50 end-0 translate-middle-y me-1 rounded-circle d-flex align-items-center justify-content-center"
+          style="width: 36px; height: 36px;"
+        >
           <i class="ri-search-line"></i>
         </button>
       </div>
     </div>
-      </div>
+  </div>
 
-      <div class="card-body p-0">
-        <div class="table-responsive">
-          <table class="table align-middle text-nowrap table-hover table-centered mb-0">
-            <thead class="bg-light-subtle">
-              <tr>
-                <th></th>
-                <th>Customer Name</th>
-                <th>Email</th>
-                <th>Contact</th>
-                <th>Property Type</th>
-                <th>Interested Properties</th>
-                <th>Status</th>
-                <th>Last Contacted</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              @for (item of filteredCustomers; track $index) {
-                <tr>
-                  <td>
-                    <div class="form-check">
-                      <input type="checkbox" class="form-check-input" />
-                    </div>
-                  </td>
-                  <td>
-                    <a href="javascript:void(0);" class="text-dark fw-medium fs-15">
-                      {{ item.name }}
-                    </a>
-                  </td>
-                  <td>{{ item.email }}</td>
-                  <td>{{ item.phone }}</td>
-                  <td>{{ item.type }}</td>
-                  <td>{{ item.address }}</td>
-                  <td>{{ item.customerStatus }}</td>
-                  <td>{{ item.date }}</td>
-                  <td>
-                    <div class="d-flex gap-2">
-                      <button
-                        type="button"
-                        class="btn btn-light btn-sm"
-                        (click)="openCustomerModal(customerModal, item)"
-                      >
-                        <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
-                      </button>
-                      <a href="javascript:void(0);" class="btn btn-soft-primary btn-sm">
-                        <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
-                      </a>
-                      <a href="javascript:void(0);" class="btn btn-soft-danger btn-sm">
-                        <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
-                      </a>
-                    </div>
-                  </td>
-                </tr>
-              }
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Modal -->
-        <ng-template #customerModal let-modal>
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ selectedCustomer?.name }}
-            </h5>
-            <button type="button" class="btn-close" (click)="modal.dismiss()"></button>
-          </div>
-
-          <div class="modal-body">
-            <div class="d-flex align-items-start gap-3 mb-3">
-              <img
-                [src]="selectedCustomer?.image"
-                alt=""
-                class="avatar-md rounded-circle border"
-              />
+  <!-- Table -->
+  <div class="table-responsive">
+    <table class="table align-middle text-nowrap table-hover table-centered mb-0">
+      <thead class="bg-light-subtle">
+        <tr>
+          <th class="ps-3">Customer Photo & Name</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Type</th>
+          <th>Address</th>
+          <th>Status</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of filteredCustomers | slice: (page - 1) * pageSize : page * pageSize">
+          <td class="ps-3">
+            <div class="d-flex align-items-center gap-2">
               <div>
-                <p><strong>Email:</strong> {{ selectedCustomer?.email }}</p>
-                <p><strong>Phone:</strong> {{ selectedCustomer?.phone }}</p>
-                <p><strong>Type:</strong> {{ selectedCustomer?.type }}</p>
-                <p><strong>Address:</strong> {{ selectedCustomer?.address }}</p>
-                <p><strong>Status:</strong> {{ selectedCustomer?.customerStatus }}</p>
-                <p><strong>Last Contacted:</strong> {{ selectedCustomer?.date }}</p>
+                <img
+                  [src]="customer.image || 'assets/images/users/default-avatar.jpg'"
+                  alt="{{ customer.name }}"
+                  class="avatar-md rounded border border-light border-3"
+                />
+              </div>
+              <div>
+                <a href="javascript:void(0);" class="text-dark fw-medium fs-15">
+                  {{ customer.name }}
+                </a>
+              </div>
+            </div>
+          </td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.phone }}</td>
+          <td>{{ customer.type }}</td>
+          <td>{{ customer.address }}</td>
+          <td>
+            <span class="badge bg-info-subtle text-info py-1 px-2 fs-13">
+              {{ customer.customerStatus }}
+            </span>
+          </td>
+          <td>{{ customer.date }}</td>
+          <td>
+            <div class="d-flex gap-2">
+              <a href="javascript:void(0);" class="btn btn-light btn-sm"
+                (click)="openCustomerModal(customerModal, customer)">
+                <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
+              </a>
+              <a href="javascript:void(0);" class="btn btn-danger btn-sm"
+                (click)="deleteCustomer(customer.id)">
+                <iconify-icon icon="solar:trash-bin-minimalistic-2-bold-duotone" class="align-middle fs-18"></iconify-icon>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <div class="card-footer">
+    <nav aria-label="Page navigation example">
+      <ngb-pagination
+        [collectionSize]="filteredCustomers.length"
+        [(page)]="page"
+        [pageSize]="pageSize"
+        (pageChange)="page = $event"
+        class="pagination justify-content-end mb-0"
+      >
+        <ng-template ngbPaginationPrevious>Previous</ng-template>
+        <ng-template ngbPaginationNext>Next</ng-template>
+      </ngb-pagination>
+    </nav>
+  </div>
+</div>
+
+<!-- Modal Template -->
+<ng-template #customerModal let-modal>
+  <div class="modal-header border-bottom-0 pb-0">
+    <h4 class="modal-title fw-bold text-dark">
+      <iconify-icon 
+        [icon]="isEditMode ? 'solar:pen-2-bold-duotone' : 'solar:user-bold-duotone'" 
+        class="align-middle me-2 text-primary">
+      </iconify-icon>
+      {{ isEditMode ? 'Edit Customer' : selectedCustomer?.name }}
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+  </div>
+  
+  <div class="modal-body p-4">
+    <!-- View Mode -->
+    <div *ngIf="!isEditMode">
+      <div class="text-center mb-4">
+        <img 
+          [src]="selectedCustomer?.image || 'assets/images/users/default-avatar.jpg'" 
+          alt="{{ selectedCustomer?.name }}" 
+          class="img-fluid rounded-3 shadow-sm"
+          style="max-height: 300px; object-fit: cover; width: 100%;">
+      </div>
+      <div class="row g-3">
+        <div class="col-md-6">
+          <div class="card border-0 bg-light-subtle h-100">
+            <div class="card-body p-3">
+              <h6 class="card-title text-primary mb-3">
+                <iconify-icon icon="solar:info-circle-bold-duotone" class="me-2"></iconify-icon>
+                Basic Information
+              </h6>
+              <div class="d-flex align-items-center mb-2">
+                <iconify-icon icon="solar:user-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Name:</span>
+                <span class="ms-2 fw-medium">{{ selectedCustomer?.name || 'N/A' }}</span>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <iconify-icon icon="solar:letter-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Email:</span>
+                <span class="ms-2 fw-medium">{{ selectedCustomer?.email || 'N/A' }}</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <iconify-icon icon="solar:phone-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Phone:</span>
+                <span class="ms-2 fw-medium">{{ selectedCustomer?.phone || 'N/A' }}</span>
               </div>
             </div>
           </div>
-
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+        </div>
+        <div class="col-md-6">
+          <div class="card border-0 bg-success-subtle h-100">
+            <div class="card-body p-3">
+              <h6 class="card-title text-success mb-3">
+                <iconify-icon icon="solar:users-group-rounded-bold-duotone" class="me-2"></iconify-icon>
+                Customer Details
+              </h6>
+              <div class="d-flex align-items-center mb-2">
+                <iconify-icon icon="solar:tag-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Type:</span>
+                <span class="ms-2 fw-medium">{{ selectedCustomer?.type || 'N/A' }}</span>
+              </div>
+              <div class="d-flex align-items-center mb-2">
+                <iconify-icon icon="solar:map-point-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Address:</span>
+                <span class="ms-2 fw-medium">{{ selectedCustomer?.address || 'N/A' }}</span>
+              </div>
+              <div class="d-flex align-items-center">
+                <iconify-icon icon="solar:calendar-bold-duotone" class="text-muted me-2"></iconify-icon>
+                <span class="text-muted small">Date:</span>
+                <span class="ms-2 fw-medium">{{ selectedCustomer?.date || 'N/A' }}</span>
+              </div>
+            </div>
           </div>
-        </ng-template>
-      </div>
+        </div>
+        <div class="col-12">
+          <div class="card border-0 bg-warning-subtle">
+            <div class="card-body p-3">
+              <h6 class="card-title text-warning mb-3">
+                <iconify-icon icon="solar:chart-square-bold-duotone" class="me-2"></iconify-icon>
+                Status & Investment
+              </h6>
+              <div class="row g-2">
+                <div class="col-md-6">
+                  <div class="d-flex align-items-center">
+                    <iconify-icon icon="solar:check-circle-bold-duotone" class="text-muted me-2"></iconify-icon>
+                    <span class="text-muted small">Status:</span>
+                    <span class="ms-2">
+                      <span class="badge bg-info-subtle text-info py-1 px-2 fs-12">
+                        {{ selectedCustomer?.customerStatus || 'N/A' }}
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="d-flex align-items-center">
+                    <iconify-icon icon="solar:money-bag-bold-duotone" class="text-muted me-2"></iconify-icon>
+                    <span class="text-muted small">Investment:</span>
+                    <span class="ms-2 fw-medium">{{ selectedCustomer?.invest || 'N/A' }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
+    </div>
 
-      <div class="card-footer">
-        <ngb-pagination [collectionSize]="30" [page]="1" class="pagination justify-content-end mb-0">
-          <ng-template ngbPaginationPrevious>Previous</ng-template>
-          <ng-template ngbPaginationNext>Next</ng-template>
-        </ngb-pagination>
-      </div>
+    <!-- Edit Mode -->
+    <div *ngIf="isEditMode && editCustomer as ec">
+      <form #editForm="ngForm" (ngSubmit)="saveCustomerChanges()" class="needs-validation" novalidate>
+        <div class="card border-0 bg-light-subtle mb-3">
+          <div class="card-body p-3">
+            <h6 class="card-title text-primary mb-3">
+              <iconify-icon icon="solar:info-circle-bold-duotone" class="me-2"></iconify-icon>
+              Basic Information
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="customerName" class="form-label fw-medium">Customer Name *</label>
+                <input type="text" class="form-control form-control-lg border-2" id="customerName"
+                       [(ngModel)]="ec.name" name="name" placeholder="Enter customer name" required>
+              </div>
+              <div class="col-md-6">
+                <label for="email" class="form-label fw-medium">Email *</label>
+                <input type="email" class="form-control form-control-lg border-2" id="email"
+                       [(ngModel)]="ec.email" name="email" placeholder="Enter email" required>
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label fw-medium">Phone</label>
+                <input type="text" class="form-control form-control-lg border-2" id="phone"
+                       [(ngModel)]="ec.phone" name="phone" placeholder="Enter phone number">
+              </div>
+              <div class="col-md-6">
+                <label for="customerType" class="form-label fw-medium">Customer Type *</label>
+                <select class="form-select form-select-lg border-2" id="customerType"
+                        [(ngModel)]="ec.type" name="type" required>
+                  <option value="">Select type</option>
+                  <option value="Residential">Residential</option>
+                  <option value="Commercial">Commercial</option>
+                  <option value="Industrial">Industrial</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 bg-info-subtle mb-3">
+          <div class="card-body p-3">
+            <h6 class="card-title text-info mb-3">
+              <iconify-icon icon="solar:map-point-bold-duotone" class="me-2"></iconify-icon>
+              Address & Status
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-8">
+                <label for="address" class="form-label fw-medium">Address *</label>
+                <input type="text" class="form-control form-control-lg border-2" id="address"
+                       [(ngModel)]="ec.address" name="address" placeholder="Enter address" required>
+              </div>
+              <div class="col-md-4">
+                <label for="customerStatus" class="form-label fw-medium">Status *</label>
+                <select class="form-select form-select-lg border-2" id="customerStatus"
+                        [(ngModel)]="ec.customerStatus" name="customerStatus" required>
+                  <option value="">Select status</option>
+                  <option value="Interested">Interested</option>
+                  <option value="Under Review">Under Review</option>
+                  <option value="Follow-up">Follow-up</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card border-0 bg-success-subtle mb-3">
+          <div class="card-body p-3">
+            <h6 class="card-title text-success mb-3">
+              <iconify-icon icon="solar:money-bag-bold-duotone" class="me-2"></iconify-icon>
+              Investment & Date
+            </h6>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="invest" class="form-label fw-medium">Investment</label>
+                <div class="input-group input-group-lg">
+                  <span class="input-group-text bg-success text-white border-2 border-success">$</span>
+                  <input type="text" class="form-control border-2 border-success" id="invest"
+                         [(ngModel)]="ec.invest" name="invest" placeholder="Enter investment amount">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="date" class="form-label fw-medium">Date</label>
+                <input type="text" class="form-control form-control-lg border-2" id="date"
+                       [(ngModel)]="ec.date" name="date" placeholder="Enter date (e.g., 15/03/2025)">
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
   </div>
-</div>
+
+  <div class="modal-footer bg-light-subtle border-top-0 pt-3">
+    <div *ngIf="!isEditMode" class="d-flex gap-2 w-100 justify-content-end">
+      <button type="button" class="btn btn-light border-2 px-4" (click)="modal.dismiss()">
+        <iconify-icon icon="solar:close-circle-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Close
+      </button>
+      <button type="button" class="btn btn-primary px-4 shadow-sm" (click)="enterEditMode()">
+        <iconify-icon icon="solar:pen-2-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Edit Customer
+      </button>
+      <button type="button" class="btn btn-danger px-4 shadow-sm" (click)="deleteCustomer(selectedCustomer?.id)">
+        <iconify-icon icon="solar:trash-bin-minimalistic-2-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Delete
+      </button>
+    </div>
+
+    <div *ngIf="isEditMode" class="d-flex gap-2 w-100 justify-content-end">
+      <button type="button" class="btn btn-light border-2 px-4" (click)="cancelEdit()">
+        <iconify-icon icon="solar:close-circle-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Cancel
+      </button>
+      <button type="button" class="btn btn-success px-4 shadow-sm" (click)="saveCustomerChanges()" [disabled]="!isFormValid()">
+        <iconify-icon icon="solar:check-circle-bold-duotone" class="align-middle me-1"></iconify-icon>
+        Save Changes
+      </button>
+    </div>
+  </div>
+</ng-template>

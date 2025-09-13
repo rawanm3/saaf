@@ -1,23 +1,52 @@
-import type { Route } from '@angular/router'
-import { ListComponent } from './list/list.component'
-import { GridComponent } from './grid/grid.component'
-import { DetailsComponent } from './details/details.component'
-import { AddComponent } from './add/add.component'
-import { SearchComponent } from './search/search.component'
+// import type { Route } from '@angular/router'
+// import { ListComponent } from './list/list.component'
+// import { GridComponent } from './grid/grid.component'
+// import { DetailsComponent } from './details/details.component'
+// import { AddComponent } from './add/add.component'
+// import { SearchComponent } from './search/search.component'
+
+// export const CUSTOMER_ROUTES: Route[] = [
+//   { path: 'list', component: ListComponent, data: { title: 'Customer List' } },
+//   { path: 'grid', component: GridComponent, data: { title: 'Customer Grid' } },
+//   {
+//     path: 'details',
+//     component: DetailsComponent,
+//     data: { title: 'Customer Overview' },
+//   },
+//   {
+//     path: 'details/:id',
+//     component: DetailsComponent,
+//     data: { title: 'Customer Overview' },
+//   },
+//   { path: 'search', component: SearchComponent, data: { title: 'Search Customers' } },
+//   { path: 'add', component: AddComponent, data: { title: 'Customers Add' } },
+// ]
+// customers.route.ts
+import type { Route } from '@angular/router';
+import { ListComponent } from './list/list.component';
+import { GridComponent } from './grid/grid.component';
+import { DetailsComponent } from './details/details.component';
+import { AddComponent } from './add/add.component';
+import { SearchComponent } from './search/search.component';
 
 export const CUSTOMER_ROUTES: Route[] = [
   { path: 'list', component: ListComponent, data: { title: 'Customer List' } },
   { path: 'grid', component: GridComponent, data: { title: 'Customer Grid' } },
-  {
+  // {
+  //   path: 'details/:id',
+  //   component: DetailsComponent,
+  //   data: { title: 'Customer Overview' },
+  // },
+    {
     path: 'details',
     component: DetailsComponent,
     data: { title: 'Customer Overview' },
   },
   {
-    path: 'details/:name',
+    path: 'details/:id',
     component: DetailsComponent,
     data: { title: 'Customer Overview' },
   },
   { path: 'search', component: SearchComponent, data: { title: 'Search Customers' } },
   { path: 'add', component: AddComponent, data: { title: 'Customers Add' } },
-]
+];

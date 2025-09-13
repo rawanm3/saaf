@@ -1,9 +1,9 @@
-import { Component } from '@angular/core'
-import { Router } from '@angular/router'
-import { CommonModule } from '@angular/common'
-import { FormsModule } from '@angular/forms'
-import { PageTitleComponent } from '@component/page-title.component'
-import { customerData, type CustomerType } from '@views/customers/data'
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PageTitleComponent } from '@component/page-title.component';
+import { CustomerService } from '@core/services/customer.service';
 
 @Component({
   selector: 'app-customer-search',
@@ -13,29 +13,43 @@ import { customerData, type CustomerType } from '@views/customers/data'
   styles: ``,
 })
 export class SearchComponent {
-  query = ''
-  customers: CustomerType[] = customerData
-  filteredNames: string[] = this.customers.map((c) => c.name)
+  query = '';
+  filteredCustomers: any[] = [];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private customerService: CustomerService
+  ) {}
 
   handleInput(event: Event) {
-    const value = (event.target as HTMLInputElement).value
-    this.query = value
-    const lower = value.toLowerCase()
-    this.filteredNames = this.customers
-      .filter((c) => c.name.toLowerCase().includes(lower))
-      .map((c) => c.name)
+    const value = (event.target as HTMLInputElement).value;
+    this.query = value.trim();
+
+    if (this.query.length > 1) {
+      
+      this.customerService.searchUsers(this.query).subscribe({
+        next: (res) => {
+          this.filteredCustomers = res || [];
+        },
+        error: (err) => {
+          console.error('Search error:', err);
+          this.filteredCustomers = [];
+        }
+      });
+    } else {
+      this.filteredCustomers = [];
+    }
   }
 
   tryNavigateSelected() {
-    const selected = this.customers.find(
-      (c) => c.name.toLowerCase() === this.query.trim().toLowerCase()
-    )
+    const selected = this.filteredCustomers.find(
+      (c) =>
+        (typeof c.name === 'string'
+          ? c.name.toLowerCase()
+          : (c.name?.en || '').toLowerCase()) === this.query.toLowerCase()
+    );
     if (selected) {
-      this.router.navigate(['/customers/details', selected.name])
+      this.router.navigate(['/customers/details', selected._id || selected.id]);
     }
   }
 }
-
-

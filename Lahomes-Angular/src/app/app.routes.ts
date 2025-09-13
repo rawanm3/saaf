@@ -66,6 +66,7 @@ export const routes: Routes = [
     import('@views/property/details/details.component').then(m => m.DetailsComponent),
 },
 
+
   // Fallback 404
   { path: '**', component: Error404Component },
 ]

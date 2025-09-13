@@ -1,41 +1,63 @@
-import { currency, currentYear } from '@common/constants'
+import { currency, currentYear } from '@common/constants';
+
+export type CustomerStatType = {
+  title: string;
+  amount: string;
+  icon: string;
+  change: number;
+  variant: string;
+};
+
+export const customerStatData: CustomerStatType[] = [
+  {
+    title: 'Total Customers',
+    amount: '501',
+    icon: 'solar:users-group-rounded-broken',
+    change: 8.5,
+    variant: 'success',
+  },
+  {
+    title: 'Active Customers',
+    amount: '450',
+    icon: 'solar:user-check-broken',
+    change: 12,
+    variant: 'success',
+  },
+  {
+    title: 'New Customers',
+    amount: '50',
+    icon: 'solar:user-plus-broken',
+    change: 17,
+    variant: 'danger',
+  },
+  {
+    title: 'Invested Amount',
+    amount: currency + '928,128',
+    icon: 'solar:money-bag-bold',
+    change: 5,
+    variant: 'primary',
+  },
+];
 
 export type CustomerType = {
-  name: string
-  image: string
-  email: string
-  phone: string
-  type: string
-  address: string
-  customerStatus: string
-  date: string
-  status: string
-  propertyView: number
-  propertyOwn: number
-  invest: string
-}
-
-export type PropertyCardType = {
-  title: string
-  Property: number
-  icon: string
-  count: string
-  progress: number
-  variant: string
-}
-
-export type TransactionType = {
-  order_id: string
-  date: string
-  type: string
-  address: string
-  amount: string
-  status: string
-  customer: string
-}
+  id: string;
+  name: string;
+  image: string;
+  email: string;
+  phone: string;
+  type: string;
+  address: string;
+  customerStatus: string;
+  date: string;
+  status: string;
+  propertyView: number;
+  propertyOwn: number;
+  invest: string;
+};
 
 export const customerData: CustomerType[] = [
   {
+    id: '201',
     name: 'Daavid Nummi',
     image: 'assets/images/users/avatar-2.jpg',
     email: 'daavidnumminen@teleworm.us',
@@ -50,6 +72,7 @@ export const customerData: CustomerType[] = [
     invest: '928,128',
   },
   {
+    id: '202',
     name: 'Sinikka Penttinen',
     image: 'assets/images/users/avatar-3.jpg',
     email: 'sinikkapenttinen@dayrep.com',
@@ -64,6 +87,7 @@ export const customerData: CustomerType[] = [
     invest: '435,892',
   },
   {
+    id: '203',
     name: 'Jere Palmu',
     image: 'assets/images/users/avatar-4.jpg',
     email: 'jerepalmu@rhyta.com',
@@ -78,6 +102,7 @@ export const customerData: CustomerType[] = [
     invest: '743,120',
   },
   {
+    id: '204',
     name: 'Ulla Nuorela',
     image: 'assets/images/users/avatar-5.jpg',
     email: 'ullanuorela@rhyta.com',
@@ -92,6 +117,7 @@ export const customerData: CustomerType[] = [
     invest: '635,812',
   },
   {
+    id: '205',
     name: 'Tiia Karppinen',
     image: 'assets/images/users/avatar-6.jpg',
     email: 'tiiakarppinen@teleworm.us',
@@ -106,6 +132,7 @@ export const customerData: CustomerType[] = [
     invest: '733,291',
   },
   {
+    id: '206',
     name: 'Harland R. Orsini',
     image: 'assets/images/users/avatar-7.jpg',
     email: 'harlandrorsini@dayrep.com',
@@ -120,6 +147,7 @@ export const customerData: CustomerType[] = [
     invest: '831,760',
   },
   {
+    id: '207',
     name: 'David Padgett',
     image: 'assets/images/users/avatar-8.jpg',
     email: 'davidpadgett@armyspy.com',
@@ -134,6 +162,7 @@ export const customerData: CustomerType[] = [
     invest: '928,128',
   },
   {
+    id: '208',
     name: 'Valerie Obrien',
     image: 'assets/images/users/avatar-9.jpg',
     email: 'valerieobrien@dayrep.com',
@@ -147,7 +176,16 @@ export const customerData: CustomerType[] = [
     propertyOwn: 27,
     invest: '928,128',
   },
-]
+];
+
+export type PropertyCardType = {
+  title: string;
+  Property: number;
+  icon: string;
+  count: string;
+  progress: number;
+  variant: string;
+};
 
 export const propertyCards: PropertyCardType[] = [
   {
@@ -174,7 +212,17 @@ export const propertyCards: PropertyCardType[] = [
     progress: 80,
     variant: 'primary',
   },
-]
+];
+
+export type TransactionType = {
+  order_id: string;
+  date: string;
+  type: string;
+  address: string;
+  amount: string;
+  status: string;
+  customer: string;
+};
 
 export const transactionData: TransactionType[] = [
   {
@@ -213,4 +261,4 @@ export const transactionData: TransactionType[] = [
     status: 'Paid',
     customer: 'Theresa T. Brose',
   },
-]
+];

@@ -19,15 +19,15 @@
             autocomplete="off"
           />
           <datalist id="customerNames">
-            @for (name of filteredNames; track name) {
-              <option [value]="name"></option>
+            @for (cust of filteredCustomers; track cust._id) {
+              <option [value]="cust.name?.en || cust.name"></option>
             }
           </datalist>
         </div>
-        <button class="btn btn-primary" (click)="tryNavigateSelected()">Go to Details</button>
+        <button class="btn btn-primary" (click)="tryNavigateSelected()">
+          Go to Details
+        </button>
       </div>
     </div>
   </div>
 </div>
-
-

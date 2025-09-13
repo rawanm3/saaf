@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, throwError } from 'rxjs';
 import { AuthenticationService } from './auth.service';
 
 @Injectable({
@@ -25,7 +25,15 @@ export class PropertyService {
       headers: this.headers,
     });
   }
+  addProperty(formData: FormData): Observable<any> {
+    if (!this.authService.session) {
+      return throwError(() => new Error('User is not authenticated!'));
+    }
 
+    return this.http.post<any>(`${this.baseUrl}/add-property`, formData, {
+      headers: this.headers
+    });
+  }
    getAllProperties(): Observable<any[]> {
     return this.http
       .get<any>(`${this.baseUrl}/all-properties`, { headers: this.headers })

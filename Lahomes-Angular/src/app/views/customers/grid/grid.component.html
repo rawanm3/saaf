@@ -1,6 +1,5 @@
 <app-page-title title="Customers" subTitle="Customer Grid" />
 
-<!-- 🔎 Search Input -->
 <div class="d-flex justify-content-end mb-4">
   <div class="position-relative" style="width: 280px; max-width: 100%;">
     <input
@@ -22,7 +21,6 @@
   </div>
 </div>
 
-<!-- 🧾 Grid -->
 <div class="row">
   @for (item of filteredCustomers; track $index) {
     <div class="col-md-6 col-xl-4 mb-4">
@@ -36,7 +34,8 @@
               style="width: 60px; height: 60px;"
             />
             <div>
-              <h5 class="mb-1 fw-semibold">{{ item.name?.en || item.name?.ar }}</h5>
+           
+              <h5 class="mb-1 fw-semibold">{{ getDisplayName(item) }}</h5>
               <span
                 class="badge"
                 [ngClass]="
@@ -57,17 +56,21 @@
           <p class="mb-1"><strong>Country:</strong> {{ item.country }}</p>
           <p class="mb-1"><strong>Role:</strong> {{ item.role }}</p>
 
-          <!-- <div class="d-flex gap-2 mt-3">
-            <a href="javascript:void(0)" class="btn btn-sm btn-primary">Chat</a>
-            <a href="javascript:void(0)" class="btn btn-sm btn-light">Call</a>
-          </div> -->
+          <div class="d-flex gap-2 mt-3">
+            <a
+              class="btn btn-sm btn-primary"
+              [routerLink]="['/customers/details', (item._id || item.id)]"
+            >
+              View Details
+            </a>
+          </div>
         </div>
       </div>
     </div>
   }
 </div>
 
-<!-- 🛑 لو مفيش داتا -->
+
 <div *ngIf="filteredCustomers.length === 0" class="alert alert-info text-center">
   No customers found.
 </div>

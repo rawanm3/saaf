@@ -4,7 +4,8 @@
 
 body {
      &.authentication-bg {
-          background: linear-gradient(90deg, hsla(205, 46%, 30%, 1) 0%, hsla(260, 29%, 36%, 1) 100%);
+          // خلفية متدرجة بين الأخضر والدهبي
+          background: linear-gradient(90deg, #3a5445 0%, #c8a877 100%);
 
           .account-pages {
                align-items: center;
@@ -39,22 +40,24 @@ html[data-bs-theme="dark"] {
 
 .auth-page-sidebar {
      padding: 4rem;
-     background-color: $card-bg;
+     background-color: #ede6e3; // بيج فاتح
      border-radius: $border-radius-sm;
      height: 100%;
      display: flex;
      align-items: center;
      justify-content: center;
+     color: #3a5445; // النصوص باللون الأخضر الغامق
 }
 
 p.no-span {
      display: table;
      white-space: nowrap;
      padding: 10px 0;
+     color: #3a5445; // النصوص باللون الأساسي
 
      &::before,
      &::after {
-          border-top: 1px solid #{$card-border-color};
+          border-top: 1px solid #c8a877; // فواصل باللون الدهبي
           content: "";
           display: table-cell;
           position: relative;

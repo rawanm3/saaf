@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, EventEmitter, Input, Output } from '@angular/core'
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap'
 
 @Component({
@@ -8,4 +8,16 @@ import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap'
   templateUrl: './customer-info.component.html',
   styles: ``,
 })
-export class CustomerInfoComponent {}
+export class CustomerInfoComponent {
+  @Input() customer: any
+  @Output() editRequested = new EventEmitter<void>()
+    @Output() deleteRequested = new EventEmitter<void>()   // 👈 جديد
+
+
+  emitEdit() {
+    this.editRequested.emit()
+  }
+   emitDelete() {
+    this.deleteRequested.emit()  // 👈 يبعث للـ parent
+  }
+}

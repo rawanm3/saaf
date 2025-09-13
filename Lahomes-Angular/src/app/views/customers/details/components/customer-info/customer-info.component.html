@@ -1,6 +1,6 @@
 <div class="card">
   <div class="card-body">
-    <div
+    <!-- <div
       id="carouselExampleCaptions"
       class="carousel slide"
       data-bs-ride="carousel"
@@ -39,44 +39,37 @@
           <div class="carousel-caption"></div>
         </ng-template>
       </ngb-carousel>
-    </div>
+    </div> -->
 
     <div class="d-flex align-items-center my-3 gap-3">
       <img
-        src="assets/images/users/avatar-2.jpg"
-        alt=""
+        [src]="customer?.profileImage || 'assets/images/default-avatar.png'"
+        alt="" style="height: 12rem;
+    width: 12rem;"
         class="rounded-circle avatar-xl img-thumbnail"
       />
       <div>
-        <h3 class="fw-semibold mb-1">Daavid Nummi</h3>
-        <a href="javascript:void(0);" class="link-primary fw-medium fs-14"
-          >EastTribune.nl</a
-        >
+        <h3 class="fw-semibold mb-1">{{ customer?.name?.en || customer?.name?.ar || customer?.name }}</h3>
+        <a href="javascript:void(0);" class="link-primary fw-medium fs-14">{{ customer?.email }}</a>
       </div>
     </div>
     <div
       class="d-flex flex-wrap align-items-start justify-content-between gap-3 mt-3"
     >
-      <div>
-        <a href="javascript:void(0);" class="btn btn-primary"
-          ><i class="ri-chat-1-fill"></i> Chat Us</a
-        >
-        <a href="javascript:void(0);" class="btn btn-outline-primary ms-1"
-          ><i class="ri-phone-fill"></i> Phone</a
-        >
-      </div>
+     
       <div class="d-flex gap-1">
-        <a
-          href="javascript: void(0);"
-          class="btn btn-dark avatar-sm d-flex align-items-center justify-content-center fs-20"
-        >
-          <i class="ri-edit-fill"></i>
-        </a>
         <a
           href="javascript: void(0);"
           class="btn btn-primary avatar-sm d-flex align-items-center justify-content-center fs-20"
         >
-          <i class="ri-share-fill"></i>
+          <i class="ri-edit-fill" (click)="emitEdit()"></i>
+        </a>
+        <a
+           href="javascript: void(0);"
+  class="btn btn-danger avatar-sm d-flex align-items-center justify-content-center fs-20"
+  (click)="emitDelete()"
+        >
+          <i class="ri-delete-bin-6-line"></i>
         </a>
       </div>
     </div>
@@ -84,27 +77,25 @@
     <div class="row my-4">
       <div class="col-lg-3">
         <p class="text-dark fw-semibold fs-16 mb-1">Email Address :</p>
-        <p class="mb-0">daavidnumminen&#64;teleworm.us</p>
+        <p class="mb-0">{{ customer?.email }}</p>
       </div>
       <div class="col-lg-3">
         <p class="text-dark fw-semibold fs-16 mb-1">Phone Number :</p>
-        <p class="mb-0">+231 06-75820711</p>
+        <p class="mb-0">{{ customer?.phone }}</p>
       </div>
       <div class="col-lg-4">
         <p class="text-dark fw-semibold fs-16 mb-1">Location :</p>
-        <p class="mb-0">Schoolstraat 161 5151 HH Drunen</p>
+        <p class="mb-0">{{ customer?.country }}</p>
       </div>
       <div class="col-lg-2">
         <p class="text-dark fw-semibold fs-16 mb-1">Status :</p>
         <p class="mb-0">
-          <span class="badge bg-success text-white fs-12 px-2 py-1"
-            >Available</span
-          >
+          <span class="badge bg-success text-white fs-12 px-2 py-1">{{ customer?.status || 'active' }}</span>
         </p>
       </div>
     </div>
 
-    <div class="row">
+    <!-- <div class="row">
       <div class="col-lg-4">
         <h4 class="card-title mb-2">Social Media :</h4>
         <ul class="list-inline d-flex gap-1 mb-0 align-items-center mt-3">
@@ -163,6 +154,6 @@
           transportation, good school district, backyard, modern kitchen
         </p>
       </div>
-    </div>
+    </div> -->
   </div>
 </div>
