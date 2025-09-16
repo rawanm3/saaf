@@ -157,6 +157,26 @@ export const MENU_ITEMS: MenuItemType[] = [
     ],
   },
   {
+    key: 'payments',
+    label: 'Payments',
+    icon: 'ri-arrow-left-right-line',
+    collapsed: true,
+    children: [
+      {
+        key: 'payments-list',
+        label: 'List View',
+        url: '/payments/list',
+        parentKey: 'payments',
+      },
+      {
+        key: 'payments-details',
+        label: 'Details',
+        url: '/payments/details',
+        parentKey: 'payments',
+      },
+    ],
+  },
+  {
     key: 'orders',
     label: 'Orders',
     icon: 'ri-home-office-line',

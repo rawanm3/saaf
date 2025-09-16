@@ -3,6 +3,7 @@ import { CommonModule, CurrencyPipe } from '@angular/common';
 import { PageTitleComponent } from '@component/page-title.component';
 import { AddInformationComponent } from './components/add-information/add-information.component';
 import { PropertyService } from '@core/services/property.service';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-add',
@@ -25,26 +26,19 @@ export class AddComponent {
   onInfoChange(updatedData: any) {
     this.propertyData = { ...this.propertyData, ...updatedData };
   }
-
-  createProperty() {
-    const formData = new FormData();
-
-    Object.keys(this.propertyData).forEach((key) => {
-      if (this.propertyData[key] !== '' && this.propertyData[key] !== undefined) {
-        const value = typeof this.propertyData[key] === 'number' 
-          ? this.propertyData[key].toString() 
-          : this.propertyData[key];
-        formData.append(key, value);
-      }
-    });
-
-    this.propertyService.addProperty(formData).subscribe({
+  createProperty(form: FormGroup) {
+    if (form.invalid) {
+      form.markAllAsTouched();
+      alert('❌ من فضلك املأ البيانات المطلوبة');
+      return;
+    }
+  
+    const propertyData = form.value;
+    this.propertyService.addProperty(propertyData).subscribe({
       next: (res) => {
-        this.createdProperty = res.data || res; // ✅ البيانات اللي هيظهر بها الكارد
+        this.createdProperty = res.data || res;
         alert('✅ تم إضافة العقار بنجاح');
-
-        // تصفير الفورم بعد الإضافة
-        this.propertyData = {};
+        form.reset(); // ✨ تصفير الفورم بعد الإضافة
       },
       error: (err) => {
         console.error(err);
@@ -52,4 +46,5 @@ export class AddComponent {
       },
     });
   }
+
 }

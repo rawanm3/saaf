@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SelectFormInputDirective } from '@core/directive/select-form-input.directive';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -13,125 +13,180 @@ import { CommonModule } from '@angular/common';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class AddInformationComponent implements OnInit {
-  @Output() infoChange = new EventEmitter<any>();
   infoForm!: FormGroup;
-  isSubmitting = false;
 
   constructor(private fb: FormBuilder, private propertyService: PropertyService) {}
 
   ngOnInit(): void {
     this.infoForm = this.fb.group({
+      // === بيانات أساسية ===
       name: ['', Validators.required],
       location: ['', Validators.required],
       type: ['residential', Validators.required],
+      square: [null],
+      numberOfRooms: [null],
+      numberOfBathrooms: [null],
+      propertyNumber: [''],
+
+      // === القيم المالية ===
       totalValue: [null, Validators.required],
-      totalShares: [null, Validators.required],
+      minInvestment: [500],
       expectedNetYield: [null, Validators.required],
       expectedAnnualReturn: [null, Validators.required],
+      holdingPeriodMonths: [60],
+
+      // === الأسهم ===
+      sharePrice: [1],
+      totalShares: [null, Validators.required],
+      remainingShares: [null],
+      investedAmount: [0],
+      investorCount: [0],
+
+      // === الإيجارات ===
+      isRented: [false],
+      currentRent: [0],
+      rentDistributionFrequency: ['quarterly'],
+      lastDividendDate: [null],
+
+      // === التقييم ===
+      previousValue: [null, Validators.required],
+      newValue: [null, Validators.required],
+      changePercent: [null],
+      valuationDate: [new Date()],
+      source: [''],
+
+      // === التمويل ===
+      fundingDeadline: [null],
+
+      // === الرسوم ===
+      acquisitionFeePercent: [1.5],
+      annualAdminFeePercent: [0.5],
+      exitFeePercent: [2.5],
+      performanceFeePercent: [7.0],
+
+      // === بيانات إضافية ===
       description: [''],
+      images: this.fb.array([]),
       features: this.fb.array([]),
+      isShariahCompliant: [true],
+
+      // === Meta + ترجمات ===
       metaTags: this.fb.group({
         title: [''],
         description: [''],
         keywords: this.fb.array([])
-      })
-    });
+      }),
+      translations: this.fb.group({
+        name: this.fb.group({ en: [''], ar: [''] }),
+        description: this.fb.group({ en: [''], ar: [''] })
+      }),
 
-    // Emit changes to parent
-    this.infoForm.valueChanges.subscribe(val => this.infoChange.emit(val));
+      // === الموقع ===
+      coordinates: this.fb.group({
+        latitude: [null],
+        longitude: [null]
+      }),
+      countryCode: ['SA'],
+
+      // === المستأجر ===
+      tenantInfo: this.fb.group({
+        name: [''],
+        leaseStartDate: [null],
+        leaseEndDate: [null],
+        monthlyRent: [null]
+      }),
+
+      // === متابعة ===
+      viewCount: [0],
+      status: ['available']
+    });
   }
 
-  // === Features ===
-  get features(): FormArray {
+  // Getters
+  get features() {
     return this.infoForm.get('features') as FormArray;
   }
-  addFeature(): void {
-    this.features.push(this.fb.control(''));
+  get keywords() {
+    return (this.infoForm.get('metaTags') as FormGroup).get('keywords') as FormArray;
+  }
+  get images() {
+    return this.infoForm.get('images') as FormArray;
   }
 
-  // === Keywords ===
-  get keywords(): FormArray {
-    return (this.infoForm.get('metaTags')?.get('keywords') as FormArray);
+  // === Add Methods ===
+  addFeature() {
+    this.features.push(this.fb.control(''));
   }
-  addKeyword(): void {
+  addKeyword() {
     this.keywords.push(this.fb.control(''));
   }
 
+  // === رفع الصور ===
+  onImageSelected(event: any) {
+    const files: FileList = event.target.files;
+    for (let i = 0; i < files.length; i++) {
+      this.images.push(this.fb.control(files[i]));
+    }
+  }
+  removeImage(index: number) {
+    this.images.removeAt(index);
+  }
+
   // === Submit ===
-  submitForm(): void {
+  onSubmit() {
     if (this.infoForm.invalid) {
-      console.log('Form Invalid ❌');
+      console.log("❌ الفورم مش مظبوط");
       return;
     }
 
-    this.isSubmitting = true;
-
-    const payload = {
-      name: this.infoForm.value.name,
-      location: this.infoForm.value.location,
-      type: this.infoForm.value.type,
-      totalValue: Number(this.infoForm.value.totalValue),
-      totalShares: Number(this.infoForm.value.totalShares),
-      expectedNetYield: Number(this.infoForm.value.expectedNetYield),
-      expectedAnnualReturn: Number(this.infoForm.value.expectedAnnualReturn),
-      description: this.infoForm.value.description,
-      features: this.infoForm.value.features || [],
-      metaTags: {
-        title: this.infoForm.value.metaTags.title,
-        description: this.infoForm.value.metaTags.description,
-        keywords: this.infoForm.value.metaTags.keywords || []
-      }
-    };
-
     const formData = new FormData();
-    formData.append('name', payload.name);
-    formData.append('location', payload.location);
-    formData.append('type', payload.type);
-    formData.append('totalValue', payload.totalValue.toString());
-    formData.append('totalShares', payload.totalShares.toString());
-    formData.append('expectedNetYield', payload.expectedNetYield.toString());
-    formData.append('expectedAnnualReturn', payload.expectedAnnualReturn.toString());
-    formData.append('description', payload.description);
 
-    payload.features.forEach((feature: string, index: number) => {
-      formData.append(`features[${index}]`, feature);
+    // 🟢 البيانات الأساسية
+    Object.keys(this.infoForm.value).forEach((key) => {
+      if (key !== 'images' && key !== 'features' && key !== 'metaTags' && key !== 'translations') {
+        formData.append(key, this.infoForm.value[key]);
+      }
     });
 
-    formData.append('metaTags[title]', payload.metaTags.title);
-    formData.append('metaTags[description]', payload.metaTags.description);
-    payload.metaTags.keywords.forEach((keyword: string, index: number) => {
-      formData.append(`metaTags[keywords][${index}]`, keyword);
+    // 🟢 الصور
+    this.images.controls.forEach((control) => {
+      formData.append("images", control.value); // مهم: images
     });
 
+    // 🟢 features
+    this.features.controls.forEach((control, index) => {
+      formData.append(`features[${index}]`, control.value);
+    });
+
+    // 🟢 metaTags
+    const metaTags = this.infoForm.get('metaTags')?.value;
+    if (metaTags) {
+      formData.append('metaTags[title]', metaTags.title);
+      formData.append('metaTags[description]', metaTags.description);
+      metaTags.keywords.forEach((kw: string, index: number) => {
+        formData.append(`metaTags[keywords][${index}]`, kw);
+      });
+    }
+
+    // 🟢 translations
+    const translations = this.infoForm.get('translations')?.value;
+    if (translations) {
+      formData.append('translations[name][en]', translations.name.en);
+      formData.append('translations[name][ar]', translations.name.ar);
+      formData.append('translations[description][en]', translations.description.en);
+      formData.append('translations[description][ar]', translations.description.ar);
+    }
+
+    console.log("✅ Data ready to send:", formData);
+
+    // إرسال للباك
     this.propertyService.addProperty(formData).subscribe({
       next: (res) => {
-        console.log('✅ Property added successfully:', res);
-        this.isSubmitting = false;
+        console.log("تم إضافة العقار ✔", res);
       },
       error: (err) => {
-        console.error('❌ Error adding property:', err);
-        this.isSubmitting = false;
-      }
-    });
-  }
-
-  // === Reset Form بعد إضافة العقار ===
-  resetForm(): void {
-    this.infoForm.reset({
-      name: '',
-      location: '',
-      type: 'residential',
-      totalValue: null,
-      totalShares: null,
-      expectedNetYield: null,
-      expectedAnnualReturn: null,
-      description: '',
-      features: [],
-      metaTags: {
-        title: '',
-        description: '',
-        keywords: []
-      }
+        console.error("❌ Error:", err);
+      },
     });
   }
 }

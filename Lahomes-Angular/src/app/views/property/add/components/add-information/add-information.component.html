@@ -1,23 +1,21 @@
 <div class="card">
   <div class="card-header">
-    <h4 class="card-title">Property Information</h4>
+    <h4 class="card-title">Add New Property</h4>
   </div>
   <div class="card-body">
-    <form [formGroup]="infoForm">
+    <form [formGroup]="infoForm" (ngSubmit)="onSubmit()">
       <div class="row">
-        <!-- Property Name -->
+        
+        <!-- ================== بيانات أساسية ================== -->
+        <h5 class="mb-3">Basic Information</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Property Name</label>
           <input type="text" class="form-control" formControlName="name" />
         </div>
-
-        <!-- Location -->
         <div class="col-lg-6 mb-3">
           <label class="form-label">Location</label>
           <input type="text" class="form-control" formControlName="location" />
         </div>
-
-        <!-- Type -->
         <div class="col-lg-6 mb-3">
           <label class="form-label">Type</label>
           <select class="form-control" formControlName="type">
@@ -26,66 +24,222 @@
             <option value="fund">Fund</option>
           </select>
         </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Property Number</label>
+          <input type="text" class="form-control" formControlName="propertyNumber" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Square (m²)</label>
+          <input type="number" class="form-control" formControlName="square" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Rooms</label>
+          <input type="number" class="form-control" formControlName="numberOfRooms" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Bathrooms</label>
+          <input type="number" class="form-control" formControlName="numberOfBathrooms" />
+        </div>
 
-        <!-- Total Value -->
+        <!-- ================== القيم المالية ================== -->
+        <h5 class="mt-4 mb-3">Financials</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Total Value</label>
           <input type="number" class="form-control" formControlName="totalValue" />
         </div>
-
-        <!-- Total Shares -->
         <div class="col-lg-6 mb-3">
-          <label class="form-label">Total Shares</label>
-          <input type="number" class="form-control" formControlName="totalShares" />
+          <label class="form-label">Minimum Investment</label>
+          <input type="number" class="form-control" formControlName="minInvestment" />
         </div>
-
-        <!-- Expected Net Yield -->
         <div class="col-lg-6 mb-3">
           <label class="form-label">Expected Net Yield (%)</label>
           <input type="number" class="form-control" formControlName="expectedNetYield" />
         </div>
-
-        <!-- Expected Annual Return -->
         <div class="col-lg-6 mb-3">
           <label class="form-label">Expected Annual Return (%)</label>
           <input type="number" class="form-control" formControlName="expectedAnnualReturn" />
         </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Holding Period (Months)</label>
+          <input type="number" class="form-control" formControlName="holdingPeriodMonths" />
+        </div>
 
-        <!-- Description -->
+        <!-- ================== الأسهم ================== -->
+        <h5 class="mt-4 mb-3">Shares</h5>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Share Price</label>
+          <input type="number" class="form-control" formControlName="sharePrice" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Total Shares</label>
+          <input type="number" class="form-control" formControlName="totalShares" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Remaining Shares</label>
+          <input type="number" class="form-control" formControlName="remainingShares" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Invested Amount</label>
+          <input type="number" class="form-control" formControlName="investedAmount" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Investor Count</label>
+          <input type="number" class="form-control" formControlName="investorCount" />
+        </div>
+
+        <!-- ================== الإيجار ================== -->
+        <h5 class="mt-4 mb-3">Rent</h5>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Is Rented?</label>
+          <input type="checkbox" formControlName="isRented" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Current Rent</label>
+          <input type="number" class="form-control" formControlName="currentRent" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Rent Distribution Frequency</label>
+          <select class="form-control" formControlName="rentDistributionFrequency">
+            <option value="monthly">Monthly</option>
+            <option value="quarterly">Quarterly</option>
+            <option value="yearly">Yearly</option>
+          </select>
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Last Dividend Date</label>
+          <input type="date" class="form-control" formControlName="lastDividendDate" />
+        </div>
+
+        <!-- ================== التقييم ================== -->
+        <h5 class="mt-4 mb-3">Valuation</h5>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Previous Value</label>
+          <input type="number" class="form-control" formControlName="previousValue" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">New Value</label>
+          <input type="number" class="form-control" formControlName="newValue" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Change Percent</label>
+          <input type="number" class="form-control" formControlName="changePercent" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Valuation Date</label>
+          <input type="date" class="form-control" formControlName="valuationDate" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Source</label>
+          <input type="text" class="form-control" formControlName="source" />
+        </div>
+
+        <!-- ================== الرسوم ================== -->
+        <h5 class="mt-4 mb-3">Fees</h5>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Acquisition Fee (%)</label>
+          <input type="number" class="form-control" formControlName="acquisitionFeePercent" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Annual Admin Fee (%)</label>
+          <input type="number" class="form-control" formControlName="annualAdminFeePercent" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Exit Fee (%)</label>
+          <input type="number" class="form-control" formControlName="exitFeePercent" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Performance Fee (%)</label>
+          <input type="number" class="form-control" formControlName="performanceFeePercent" />
+        </div>
+
+        <!-- ================== إضافي ================== -->
+        <h5 class="mt-4 mb-3">Additional Information</h5>
         <div class="col-lg-12 mb-3">
           <label class="form-label">Description</label>
           <textarea class="form-control" formControlName="description"></textarea>
         </div>
-
-        <!-- Features -->
         <div class="col-lg-12 mb-3">
           <label class="form-label">Features</label>
           <div formArrayName="features">
             <div *ngFor="let f of features.controls; let i = index">
               <input type="text" class="form-control mb-1" [formControlName]="i" />
             </div>
-            <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="addFeature()">+ Add Feature</button>
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addFeature()">+ Add Feature</button>
           </div>
         </div>
+        <div class="col-lg-12 mb-3">
+          <label class="form-label">Upload Images</label>
+          <input type="file" (change)="onImageSelected($event)" multiple />
 
-        <!-- Meta Tags -->
-        <div class="col-lg-12 mb-3" formGroupName="metaTags">
+        </div>
+        <!-- <div class="col-lg-12 mb-3">
+          <label class="form-label">Upload Legal Documents</label>
+          <input type="file" multiple (change)="onDocumentSelected($event)" class="form-control" />
+        </div> -->
+
+        <!-- ================== Meta Tags ================== -->
+        <h5 class="mt-4 mb-3">Meta Tags</h5>
+        <div class="col-lg-6 mb-3" formGroupName="metaTags">
           <label class="form-label">Meta Title</label>
           <input type="text" class="form-control" formControlName="title" />
-
           <label class="form-label mt-2">Meta Description</label>
           <textarea class="form-control" formControlName="description"></textarea>
-
           <label class="form-label mt-2">Keywords</label>
           <div formArrayName="keywords">
             <div *ngFor="let k of keywords.controls; let i = index">
               <input type="text" class="form-control mb-1" [formControlName]="i" />
             </div>
-            <button type="button" class="btn btn-sm btn-outline-primary mt-2" (click)="addKeyword()">+ Add Keyword</button>
+            <button type="button" class="btn btn-outline-primary btn-sm" (click)="addKeyword()">+ Add Keyword</button>
           </div>
         </div>
+
+        <!-- ================== الموقع ================== -->
+        <h5 class="mt-4 mb-3">Location</h5>
+        <div class="col-lg-6 mb-3" formGroupName="coordinates">
+          <label class="form-label">Latitude</label>
+          <input type="number" class="form-control" formControlName="latitude" />
+          <label class="form-label mt-2">Longitude</label>
+          <input type="number" class="form-control" formControlName="longitude" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Country Code</label>
+          <input type="text" class="form-control" formControlName="countryCode" />
+        </div>
+
+        <!-- ================== المستأجر ================== -->
+        <h5 class="mt-4 mb-3">Tenant Info</h5>
+        <div class="col-lg-6 mb-3" formGroupName="tenantInfo">
+          <label class="form-label">Tenant Name</label>
+          <input type="text" class="form-control" formControlName="name" />
+          <label class="form-label mt-2">Lease Start Date</label>
+          <input type="date" class="form-control" formControlName="leaseStartDate" />
+          <label class="form-label mt-2">Lease End Date</label>
+          <input type="date" class="form-control" formControlName="leaseEndDate" />
+          <label class="form-label mt-2">Monthly Rent</label>
+          <input type="number" class="form-control" formControlName="monthlyRent" />
+        </div>
+
+        <!-- ================== متابعة ================== -->
+        <h5 class="mt-4 mb-3">Tracking</h5>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">View Count</label>
+          <input type="number" class="form-control" formControlName="viewCount" />
+        </div>
+        <div class="col-lg-6 mb-3">
+          <label class="form-label">Status</label>
+          <select class="form-control" formControlName="status">
+            <option value="available">Available</option>
+            <option value="sold">Sold</option>
+            <option value="rented">Rented</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- Submit -->
+      <div class="text-end mt-3">
+    
       </div>
     </form>
   </div>
 </div>
-
