@@ -3,10 +3,10 @@
     <h4 class="card-title">Add New Property</h4>
   </div>
   <div class="card-body">
-    <form [formGroup]="infoForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="infoForm">
       <div class="row">
-        
-        <!-- ================== بيانات أساسية ================== -->
+
+        <!-- ================== Basic Information ================== -->
         <h5 class="mb-3">Basic Information</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Property Name</label>
@@ -41,7 +41,7 @@
           <input type="number" class="form-control" formControlName="numberOfBathrooms" />
         </div>
 
-        <!-- ================== القيم المالية ================== -->
+        <!-- ================== Financials ================== -->
         <h5 class="mt-4 mb-3">Financials</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Total Value</label>
@@ -64,7 +64,7 @@
           <input type="number" class="form-control" formControlName="holdingPeriodMonths" />
         </div>
 
-        <!-- ================== الأسهم ================== -->
+        <!-- ================== Shares ================== -->
         <h5 class="mt-4 mb-3">Shares</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Share Price</label>
@@ -87,7 +87,7 @@
           <input type="number" class="form-control" formControlName="investorCount" />
         </div>
 
-        <!-- ================== الإيجار ================== -->
+        <!-- ================== Rent ================== -->
         <h5 class="mt-4 mb-3">Rent</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Is Rented?</label>
@@ -110,7 +110,7 @@
           <input type="date" class="form-control" formControlName="lastDividendDate" />
         </div>
 
-        <!-- ================== التقييم ================== -->
+        <!-- ================== Valuation ================== -->
         <h5 class="mt-4 mb-3">Valuation</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Previous Value</label>
@@ -133,7 +133,7 @@
           <input type="text" class="form-control" formControlName="source" />
         </div>
 
-        <!-- ================== الرسوم ================== -->
+        <!-- ================== Fees ================== -->
         <h5 class="mt-4 mb-3">Fees</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">Acquisition Fee (%)</label>
@@ -152,7 +152,7 @@
           <input type="number" class="form-control" formControlName="performanceFeePercent" />
         </div>
 
-        <!-- ================== إضافي ================== -->
+        <!-- ================== Additional Information ================== -->
         <h5 class="mt-4 mb-3">Additional Information</h5>
         <div class="col-lg-12 mb-3">
           <label class="form-label">Description</label>
@@ -170,12 +170,7 @@
         <div class="col-lg-12 mb-3">
           <label class="form-label">Upload Images</label>
           <input type="file" (change)="onImageSelected($event)" multiple />
-
         </div>
-        <!-- <div class="col-lg-12 mb-3">
-          <label class="form-label">Upload Legal Documents</label>
-          <input type="file" multiple (change)="onDocumentSelected($event)" class="form-control" />
-        </div> -->
 
         <!-- ================== Meta Tags ================== -->
         <h5 class="mt-4 mb-3">Meta Tags</h5>
@@ -193,7 +188,7 @@
           </div>
         </div>
 
-        <!-- ================== الموقع ================== -->
+        <!-- ================== Location ================== -->
         <h5 class="mt-4 mb-3">Location</h5>
         <div class="col-lg-6 mb-3" formGroupName="coordinates">
           <label class="form-label">Latitude</label>
@@ -206,7 +201,7 @@
           <input type="text" class="form-control" formControlName="countryCode" />
         </div>
 
-        <!-- ================== المستأجر ================== -->
+        <!-- ================== Tenant Info ================== -->
         <h5 class="mt-4 mb-3">Tenant Info</h5>
         <div class="col-lg-6 mb-3" formGroupName="tenantInfo">
           <label class="form-label">Tenant Name</label>
@@ -219,7 +214,7 @@
           <input type="number" class="form-control" formControlName="monthlyRent" />
         </div>
 
-        <!-- ================== متابعة ================== -->
+        <!-- ================== Tracking ================== -->
         <h5 class="mt-4 mb-3">Tracking</h5>
         <div class="col-lg-6 mb-3">
           <label class="form-label">View Count</label>
@@ -236,10 +231,38 @@
 
       </div>
 
-      <!-- Submit -->
+      <!-- Submit Buttons -->
       <div class="text-end mt-3">
-    
+        <button
+          class="btn btn-outline-primary"
+          [disabled]="infoForm.invalid || submitting"
+          (click)="onSubmit()"
+        >
+          {{ submitting ? 'Submitting...' : 'Create Property' }}
+        </button>
+        <button type="button" class="btn btn-danger ms-2" (click)="infoForm.reset()">Cancel</button>
       </div>
     </form>
+
+    <!-- Display Created Property -->
+    <div class="mt-4" *ngIf="createdProperty">
+      <h5>Created Property:</h5>
+      <div class="card">
+        <img
+          [src]="'http://localhost:3000/' + (createdProperty.images?.[0] || '')"
+          class="card-img-top"
+          *ngIf="createdProperty.images?.length; else noImage"
+        />
+        <ng-template #noImage>
+          <img src="assets/images/properties/default.jpg" class="card-img-top" />
+        </ng-template>
+        <div class="card-body">
+          <h5 class="card-title">{{ createdProperty.name }}</h5>
+          <p class="card-text">{{ createdProperty.location }}</p>
+          <p><strong>Price:</strong> {{ createdProperty.totalValue | currency }}</p>
+          <p><strong>Total Shares:</strong> {{ createdProperty.totalShares }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

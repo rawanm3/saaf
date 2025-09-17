@@ -31,22 +31,23 @@
 
   <!-- الفورم -->
   <div class="col-xl-9 col-lg-8">
-    <add-information #infoComp></add-information>
-
+    <!-- 🟢 نستقبل البيانات اللي رجعت من الـ child -->
+    <add-information></add-information>
 
     <div class="mb-3 rounded">
       <div class="row justify-content-end g-2">
         <div class="col-lg-2">
-          <button
-          (click)="createProperty(infoComp.infoForm)"
-          class="btn btn-outline-primary w-100"
-        >
-          Create Property
-        </button>
-        
+          <!-- <button
+            class="btn btn-outline-primary w-100"
+            (click)="triggerChildSubmit()"
+          >
+            Create Property
+          </button> -->
         </div>
         <div class="col-lg-2">
-          <button href="javascript:void(0);" class="btn btn-danger w-100">Cancel</button>
+          <!-- <button href="javascript:void(0);" class="btn btn-danger w-100">
+            Cancel
+          </button> -->
         </div>
       </div>
     </div>
