@@ -104,10 +104,21 @@ export class AddInformationComponent implements OnInit {
     this.submitting = true;
     const formData = new FormData();
   
-    // ارسال الحقول الأساسية كـ string
-    const keys = [
-      'name','location','type','totalValue','totalShares','square',
-      'numberOfRooms','numberOfBathrooms','propertyNumber','minInvestment',
+    // 🔹 Append الحقول الأساسية المطلوبة
+    const requiredKeys = ['name', 'location', 'type', 'totalValue', 'totalShares'];
+    requiredKeys.forEach(key => {
+      const value = this.infoForm.get(key)?.value;
+      if (value === null || value === undefined || value === '') {
+        console.warn(`⚠️ ${key} is empty!`);
+        formData.append(key, ''); // نحط قيمة افتراضية لو فاضية
+      } else {
+        formData.append(key, value.toString());
+      }
+    });
+  
+    // 🔹 Append باقي الحقول
+    const otherKeys = [
+      'square','numberOfRooms','numberOfBathrooms','propertyNumber','minInvestment',
       'expectedNetYield','expectedAnnualReturn','holdingPeriodMonths',
       'sharePrice','remainingShares','investedAmount','investorCount',
       'isRented','currentRent','rentDistributionFrequency','lastDividendDate',
@@ -115,25 +126,35 @@ export class AddInformationComponent implements OnInit {
       'acquisitionFeePercent','annualAdminFeePercent','exitFeePercent','performanceFeePercent',
       'description','viewCount','status','countryCode'
     ];
-  
-    keys.forEach(key => {
+    otherKeys.forEach(key => {
       const value = this.infoForm.get(key)?.value;
-      if (value !== null && value !== undefined) {
-        formData.append(key, value.toString()); // مهم جداً
-      }
+      if (value !== null && value !== undefined) formData.append(key, value.toString());
     });
   
-    // ارسال الـ nested objects كـ JSON
+    // 🔹 Append الـ nested objects
     formData.append('coordinates', JSON.stringify(this.infoForm.get('coordinates')?.value));
     formData.append('tenantInfo', JSON.stringify(this.infoForm.get('tenantInfo')?.value));
     formData.append('metaTags', JSON.stringify(this.infoForm.get('metaTags')?.value));
   
-    // ارسال الـ arrays
+    // 🔹 Append الـ arrays
     this.features.controls.forEach(ctrl => formData.append('features', ctrl.value));
-    this.images.controls.forEach(ctrl => formData.append('images', ctrl.value));
+    this.keywords.controls.forEach(ctrl => formData.append('metaTags.keywords', ctrl.value));
+    this.images.controls.forEach(ctrl => {
+      const file = ctrl.value as File;
+      if (file) formData.append('images', file);
+    });
   
+    // 🔹 Debug: عرض كل القيم قبل الإرسال
+    console.log('--- FormData content ---');
+    formData.forEach((value, key) => {
+      console.log(key, value);
+    });
+    console.log('------------------------');
+  
+    // 🔹 الإرسال
     this.propertyService.addProperty(formData).subscribe({
       next: res => {
+        console.log('✅ Property created:', res);
         this.createdProperty = res;
         this.infoForm.reset();
         this.features.clear();
@@ -141,7 +162,10 @@ export class AddInformationComponent implements OnInit {
         this.keywords.clear();
         this.submitting = false;
       },
-      error: err => { console.error(err); this.submitting = false; }
+      error: err => {
+        console.error('❌ Error creating property:', err);
+        this.submitting = false;
+      }
     });
   }
 }

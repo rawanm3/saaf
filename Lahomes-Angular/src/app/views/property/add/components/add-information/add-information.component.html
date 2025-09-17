@@ -234,12 +234,13 @@
       <!-- Submit Buttons -->
       <div class="text-end mt-3">
         <button
-          class="btn btn-outline-primary"
-          [disabled]="infoForm.invalid || submitting"
-          (click)="onSubmit()"
-        >
-          {{ submitting ? 'Submitting...' : 'Create Property' }}
-        </button>
+  type="button"
+  class="btn btn-outline-primary"
+  [disabled]="infoForm.invalid || submitting"
+  (click)="onSubmit()"
+>
+  {{ submitting ? 'Submitting...' : 'Create Property' }}
+</button>
         <button type="button" class="btn btn-danger ms-2" (click)="infoForm.reset()">Cancel</button>
       </div>
     </form>

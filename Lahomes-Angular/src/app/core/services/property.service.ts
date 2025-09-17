@@ -30,7 +30,7 @@ export class PropertyService {
     for (const key in propertyData) {
       if (propertyData.hasOwnProperty(key)) {
         const value = propertyData[key];
-
+        if (key === 'images') continue;
         // ✅ لو Arrays (features, keywords, metaTags, translations...)
         if (Array.isArray(value)) {
           value.forEach((item, index) => {
@@ -49,11 +49,15 @@ export class PropertyService {
         }
       }
     }
+   
+
 
     // 🔹 Append الصور
     if (propertyData.images && propertyData.images.length > 0) {
       propertyData.images.forEach((file: File) => {
         formData.append('images', file);
+      
+
       });
     }
 

@@ -4,9 +4,6 @@
     <div class="col-md-6">
       <label class="form-label">Name (Arabic)</label>
       <input type="text" formControlName="nameAr" class="form-control" placeholder="ادخل الاسم بالعربية" />
-      <small *ngIf="customerForm.get('nameAr')?.invalid && customerForm.get('nameAr')?.touched" class="text-danger">
-        Arabic Name is required
-      </small>
     </div>
 
     <!-- English Name -->
@@ -19,9 +16,6 @@
     <div class="col-md-6">
       <label class="form-label">National ID</label>
       <input type="text" formControlName="nationalId" class="form-control" placeholder="Enter National ID" />
-      <small *ngIf="customerForm.get('nationalId')?.invalid && customerForm.get('nationalId')?.touched" class="text-danger">
-        National ID is required
-      </small>
     </div>
 
     <!-- Country -->
@@ -35,27 +29,18 @@
         <option value="UK">United Kingdom</option>
         <option value="FR">France</option>
       </select>
-      <small *ngIf="customerForm.get('country')?.invalid && customerForm.get('country')?.touched" class="text-danger">
-        Country is required
-      </small>
     </div>
 
     <!-- Password (Non-Saudi only) -->
     <div class="col-md-6" *ngIf="customerForm.get('country')?.value?.toLowerCase() !== 'sa'">
       <label class="form-label">Password</label>
       <input type="password" formControlName="password" class="form-control" placeholder="Enter Password" />
-      <small *ngIf="customerForm.get('password')?.invalid && customerForm.get('password')?.touched" class="text-danger">
-        Password is required for non-Saudi users
-      </small>
     </div>
 
     <!-- Nafath Sub (Saudi only) -->
     <div class="col-md-6" *ngIf="customerForm.get('country')?.value?.toLowerCase() === 'sa'">
       <label class="form-label">Nafath Sub</label>
       <input type="text" formControlName="nafathSub" class="form-control" placeholder="Enter Nafath ID" />
-      <small *ngIf="customerForm.get('nafathSub')?.invalid && customerForm.get('nafathSub')?.touched" class="text-danger">
-        Nafath Sub is required for Saudi users
-      </small>
     </div>
 
     <!-- Email -->
@@ -76,16 +61,22 @@
       <input type="text" formControlName="iban" class="form-control" placeholder="Enter IBAN" />
     </div>
 
-    <!-- National ID Image URL -->
+    <!-- National ID Image -->
     <div class="col-md-6">
-      <label class="form-label">National ID Image URL</label>
-      <input type="text" formControlName="nationalIdImageUrl" class="form-control" placeholder="https://example.com/id.png" />
+      <label class="form-label">National ID Image</label>
+      <input type="file" (change)="onFileSelected($event, 'nationalIdImageUrl')" />
     </div>
 
-    <!-- IBAN Image URL -->
+    <!-- IBAN Image -->
     <div class="col-md-6">
-      <label class="form-label">IBAN Image URL</label>
-      <input type="text" formControlName="ibanImageUrl" class="form-control" placeholder="https://example.com/iban.png" />
+      <label class="form-label">IBAN Image</label>
+      <input type="file" (change)="onFileSelected($event, 'ibanImageUrl')" />
+    </div>
+
+    <!-- Profile Image -->
+    <div class="col-md-6">
+      <label class="form-label">Profile Image</label>
+      <input type="file" (change)="onFileSelected($event, 'profileImage')" />
     </div>
 
     <!-- Status -->
@@ -110,23 +101,7 @@
     </div>
   </div>
 
-  <!-- Submit -->
   <div class="mt-3 text-end">
-    <button type="submit" class="btn btn-primary">Save Customer</button>
-  </div>
-
-  <!-- Debug Panel -->
-  <div class="card mt-4">
-    <div class="card-body">
-      <h6 class="mb-2">🧪 Debug</h6>
-      <div class="mb-2">
-        <strong>Missing (client-check):</strong>
-        <span *ngIf="!missingFields.length">None ✅</span>
-        <code *ngIf="missingFields.length">{{ missingFields.join(', ') }}</code>
-      </div>
-      <pre class="bg-light p-2 rounded" style="white-space: pre-wrap;">
-{{ debugPayload | json }}
-      </pre>
-    </div>
+    <button type="submit" class="btn btn-primary">Create Customer</button>
   </div>
 </form>
