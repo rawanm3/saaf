@@ -11,3 +11,5 @@ import { currency } from '@common/constants'
 export class CustomerCardComponent {
   currency = currency
 }
+
+

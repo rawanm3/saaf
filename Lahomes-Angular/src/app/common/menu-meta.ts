@@ -81,7 +81,7 @@ export const MENU_ITEMS: MenuItemType[] = [
       {
         key: 'property-details',
         label: 'Property Details',
-        url: '/property/details',
+        url: '/property/search',
         parentKey: 'property',
       },
       {
@@ -145,7 +145,7 @@ export const MENU_ITEMS: MenuItemType[] = [
       {
         key: 'customer-details',
         label: 'Customer Details',
-        url: '/customers/details',
+        url: '/customers/search',
         parentKey: 'customers',
       },
       {
@@ -153,6 +153,26 @@ export const MENU_ITEMS: MenuItemType[] = [
         label: 'Add Customer',
         url: '/customers/add',
         parentKey: 'customers',
+      },
+    ],
+  },
+  {
+    key: 'payments',
+    label: 'Payments',
+    icon: 'ri-arrow-left-right-line',
+    collapsed: true,
+    children: [
+      {
+        key: 'payments-list',
+        label: 'List View',
+        url: '/payments/list',
+        parentKey: 'payments',
+      },
+      {
+        key: 'payments-details',
+        label: 'Details',
+        url: '/payments/details',
+        parentKey: 'payments',
       },
     ],
   },

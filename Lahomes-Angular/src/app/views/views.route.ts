@@ -6,6 +6,7 @@ import { ReviewsComponent } from './apps/reviews/reviews.component'
 import { TransactionsComponent } from './apps/transactions/transactions.component'
 import { WidgetsComponent } from './apps/widgets/widgets.component'
 
+
 export const VIEWS_ROUTES: Route[] = [
   {
     path: 'dashboards',
@@ -28,6 +29,11 @@ export const VIEWS_ROUTES: Route[] = [
     path: 'customers',
     loadChildren: () =>
       import('./customers/customers.route').then((mod) => mod.CUSTOMER_ROUTES),
+  },
+  {
+    path: 'payments',
+    loadChildren: () =>
+      import('./payments/payments.route').then((mod) => mod.PAYMENTS_ROUTES),
   },
   {
     path: 'orders',

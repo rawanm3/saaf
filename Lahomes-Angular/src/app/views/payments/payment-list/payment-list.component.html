@@ -1,0 +1,99 @@
+<app-page-title title="Payments" subTitle="All Payments" />
+
+<div class="row">
+  <div class="col-xl-12">
+    <div class="card">
+      <!-- Header -->
+      <div
+        class="card-header d-flex justify-content-between align-items-center border-bottom"
+      >
+        <h4 class="card-title">Payments List</h4>
+        <div ngbDropdown>
+          <a
+            ngbDropdownToggle
+            class="btn btn-sm btn-outline-light rounded"
+            role="button"
+          >
+            This Month
+          </a>
+          <div ngbDropdownMenu class="dropdown-menu-end">
+            <a class="dropdown-item" role="button">Download</a>
+            <a class="dropdown-item" role="button">Export</a>
+            <a class="dropdown-item" role="button">Import</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table
+            class="table align-middle text-nowrap table-hover table-centered mb-0"
+          >
+            <thead class="bg-light-subtle">
+              <tr>
+                <th>#</th>
+                <th>Payment ID</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Method</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let payment of payments; let i = index">
+                <td>{{ i + 1 }}</td>
+                <td>{{ payment.id }}</td>
+                <td>{{ payment.customerName }}</td>
+                <td>{{ payment.createdAt | date:'short' }}</td>
+                <td>{{ payment.currency }} {{ payment.amount }}</td>
+                <td>{{ payment.method }}</td>
+                <td>
+                  <span
+                    class="badge py-1 px-2 fs-12"
+                    [ngClass]="{
+                      'bg-success-subtle text-success': payment.status == 'Succeeded',
+                      'bg-warning-subtle text-warning': payment.status == 'Pending',
+                      'bg-danger-subtle text-danger': payment.status == 'Failed'
+                    }"
+                  >
+                    {{ payment.status }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn btn-soft-danger btn-sm" (click)="deletePayment(payment.id)">
+                    <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
+                  </button>
+                </td>
+              </tr>
+
+              <tr *ngIf="payments.length === 0">
+                <td colspan="8" class="text-center py-4">
+                  لا توجد مدفوعات حالياً
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="card-footer">
+        <nav aria-label="Page navigation example">
+          <ngb-pagination
+            [collectionSize]="payments.length"
+            [(page)]="page"
+            [pageSize]="10"
+            class="pagination justify-content-end mb-0"
+          >
+            <ng-template ngbPaginationPrevious>Previous</ng-template>
+            <ng-template ngbPaginationNext>Next</ng-template>
+          </ngb-pagination>
+        </nav>
+      </div>
+    </div>
+  </div>
+</div>

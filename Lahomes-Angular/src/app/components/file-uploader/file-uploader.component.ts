@@ -1,4 +1,4 @@
-import { Component, Input, type OnInit } from '@angular/core'
+import { Component, EventEmitter, Input, Output, type OnInit } from '@angular/core'
 import {
   DROPZONE_CONFIG,
   DropzoneConfigInterface,
@@ -10,6 +10,7 @@ type UploadedFile = {
   size: number
   type: string
   dataURL?: string
+  file?: File
 }
 
 const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
@@ -27,7 +28,7 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
       class="dropzone"
       [config]="dropzoneConfig"
       [message]="dropzone"
-      (success)="onUploadSuccess($event)"
+    
     ></dropzone>
 
     @if (uploadedFiles) {
@@ -75,6 +76,8 @@ const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
   ],
 })
 export class FileUploaderComponent {
+  @Output() filesSelected = new EventEmitter<File[]>() // ✨ نبعث الملفات للأب
+  
   uploadedFiles: UploadedFile[] = []
 
   dropzoneConfig: DropzoneConfigInterface = {
@@ -94,16 +97,50 @@ export class FileUploaderComponent {
                       </div>
 `
 
-  // File Upload
-  imageURL: string = ''
-  onUploadSuccess(event: UploadedFile[]) {
-    setTimeout(() => {
-      this.uploadedFiles.push(event[0])
-    }, 0)
-  }
 
-  // File Remove
+  // ✨ لما يضاف ملف
+  onFileAdded(file: any) {
+    const reader = new FileReader()
+    reader.onload = () => {
+      this.uploadedFiles.push({
+        name: file.name,
+        size: Math.round(file.size / 1024),
+        type: file.type,
+        dataURL: reader.result as string,
+        file: file,
+      })
+      this.emitFiles()
+    }
+    reader.readAsDataURL(file)
+  }
+   // ✨ لما يتم الحذف
+   onFileRemoved(file: any) {
+    this.uploadedFiles = this.uploadedFiles.filter(f => f.name !== file.name)
+    this.emitFiles()
+  }
+  
   removeFile(index: number) {
     this.uploadedFiles.splice(index, 1)
+    this.emitFiles()
   }
+
+  // ✨ نبعث الملفات للأب
+  private emitFiles() {
+    const files = this.uploadedFiles.map(f => f.file!) // نرجع File[]
+    this.filesSelected.emit(files)
+  }
+  
 }
+  // // File Upload
+  // imageURL: string = ''
+  // onUploadSuccess(event: UploadedFile[]) {
+  //   setTimeout(() => {
+  //     this.uploadedFiles.push(event[0])
+  //   }, 0)
+  // }
+
+  // // File Remove
+  // removeFile(index: number) {
+  //   this.uploadedFiles.splice(index, 1)
+  // }
+
